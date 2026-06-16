@@ -1,1 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice-of-Brahma-V1 – Universal Ternary Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0a0e14;
+            color: #e0e6ed;
+            font-family: 'Segoe UI', 'Fira Code', monospace;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            border-bottom: 2px solid #5ecf82;
+            padding-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        header h1 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: #5ecf82;
+        }
+        header p {
+            color: #8899aa;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: #141a22;
+            border: 1px solid #2a3340;
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
+        }
+        .card:hover {
+            border-color: #5ecf82;
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #5ecf82;
+            border-bottom: 1px solid #2a3340;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .input-group label {
+            font-size: 0.85rem;
+            color: #8899aa;
+        }
+        .input-group input,
+        .input-group textarea {
+            background: #0a0e14;
+            border: 1px solid #2a3340;
+            border-radius: 6px;
+            color: #e0e6ed;
+            padding: 0.6rem 0.8rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #5ecf82;
+        }
+        .btn {
+            background: #2a6b40;
+            border: none;
+            border-radius: 6px;
+            padding: 0.6rem 1.2rem;
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 0.5rem;
+        }
+        .btn:hover {
+            background: #3a8b5a;
+        }
+        .btn-secondary {
+            background: #1a2a24;
+            border: 1px solid #2a6b40;
+        }
+        .btn-secondary:hover {
+            background: #2a3a34;
+        }
+        .output-box {
+            background: #0a0e14;
+            border: 1px solid #2a3340;
+            border-radius: 6px;
+            padding: 0.8rem;
+            min-height: 2.5rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+            margin-top: 0.5rem;
+            color: #b0c4de;
+            white-space: pre-wrap;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .badge {
+            display: inline-block;
+            background: #1a2a24;
+            color: #5ecf82;
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+        }
+        .flex-row {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .registers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.3rem;
+            margin: 0.5rem 0;
+            font-size: 0.8rem;
+        }
+        .registers span {
+            background: #0a0e14;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid #1a2a24;
+        }
+        .registers .reg-name {
+            color: #8899aa;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: #556677;
+            font-size: 0.8rem;
+            border-top: 1px solid #2a3340;
+            padding-top: 1.5rem;
+        }
+        .footer strong {
+            color: #5ecf82;
+        }
+        .error {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+        }
+        .success {
+            color: #5ecf82;
+        }
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🗣️ Voice-of-Brahma-V1</h1>
+            <p>Universal Ternary Language Platform · <span class="badge">scalePRT</span> <span class="badge">5‑trit ASCII</span></p>
+        </header>
 
+        <div class="grid">
+
+            <!-- 1. Ternary ASCII Translator -->
+            <div class="card">
+                <h2>📝 Ternary ASCII Translator</h2>
+                <div class="input-group">
+                    <label for="textInput">Enter text (ASCII):</label>
+                    <input type="text" id="textInput" value="Hello, World!" placeholder="Type something..." />
+                </div>
+                <div class="flex-row">
+                    <button class="btn" id="toTernaryBtn">→ Ternary</button>
+                    <button class="btn btn-secondary" id="toTextBtn">← ASCII</button>
+                </div>
+                <div class="output-box" id="ternaryOutput"></div>
+                <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;">
+                    Each char = 5 trits · Space = 01012
+                </div>
+                <div id="ternaryError" class="error" style="display:none;"></div>
+            </div>
+
+            <!-- 2. Enigma Rotor Simulator -->
+            <div class="card">
+                <h2>🌀 Enigma Rotor Simulator</h2>
+                <div class="input-group">
+                    <label for="rotorInput">Enter ternary string (0,1,2 only):</label>
+                    <input type="text" id="rotorInput" value="021020211202112021210214301001" placeholder="e.g. 02102..." />
+                </div>
+                <button class="btn" id="rotorBtn">🔀 Apply Rotors</button>
+                <div class="output-box" id="rotorOutput">(encrypted ternary will appear here)</div>
+                <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;">
+                    Rotors: I, II, III · Reflector: -1 ↔ +1
+                </div>
+                <div id="rotorError" class="error" style="display:none;"></div>
+            </div>
+
+            <!-- 3. TVM Demo -->
+            <div class="card">
+                <h2>⚙️ TVM – Add Program</h2>
+                <p style="font-size:0.9rem; color:#8899aa;">Program: LOAD R0, 5 | LOAD R1, 3 | ADD | HALT</p>
+                <button class="btn" id="tvmBtn">▶ Run TVM</button>
+                <div style="margin-top:0.8rem;">
+                    <div><strong>Registers after execution:</strong></div>
+                    <div class="registers" id="regDisplay">
+                        <span><span class="reg-name">R0</span> <span id="r0">00000</span></span>
+                        <span><span class="reg-name">R1</span> <span id="r1">00000</span></span>
+                        <span><span class="reg-name">R2</span> <span id="r2">00000</span></span>
+                        <span><span class="reg-name">R3</span> <span id="r3">00000</span></span>
+                        <span><span class="reg-name">R4</span> <span id="r4">00000</span></span>
+                        <span><span class="reg-name">R5</span> <span id="r5">00000</span></span>
+                    </div>
+                </div>
+                <div class="output-box" id="tvmOutput">Result (R0) = 8 (00022₃) ✅</div>
+            </div>
+
+            <!-- 4. scalePRT Calculator -->
+            <div class="card">
+                <h2>📏 scalePRT Calculator</h2>
+                <div class="input-group">
+                    <label for="fwhm">Resonance FWHM (Hz):</label>
+                    <input type="number" id="fwhm" value="41700" step="100" />
+                </div>
+                <div class="input-group">
+                    <label for="temp">Temperature (K):</label>
+                    <input type="number" id="temp" value="300" step="1" />
+                </div>
+                <button class="btn" id="scaleBtn">⚡ Compute scalePRT</button>
+                <div class="output-box" id="scaleOutput">scalePRT = 8.14e-36 m</div>
+                <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;" id="scaleRatio">
+                    Ratio to Landauer limit: 1.04e8×
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            <strong>Voice-of-Brahma-V1</strong> · All Rights Reserved ® Seliim Ahmed ·
+            <a href="mailto:amit.khanna.1082@gmail.com" style="color:#5ecf82;">amit.khanna.1082@gmail.com</a>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================
+        // 1. TERNARY ASCII CODEC
+        // ============================================================
+
+        function intToTernary5(n) {
+            if (n === 0) return '00000';
+            let digits = '';
+            while (n > 0) {
+                digits = (n % 3) + digits;
+                n = Math.floor(n / 3);
+            }
+            return digits.padStart(5, '0');
+        }
+
+        // Build tables
+        const ASCII_TO_TERNARY = {};
+        const TERNARY_TO_ASCII = {};
+
+        for (let code = 0; code < 128; code++) {
+            const trits = intToTernary5(code);
+            const char = String.fromCharCode(code);
+            ASCII_TO_TERNARY[char] = trits;
+            TERNARY_TO_ASCII[trits] = char;
+        }
+
+        function textToTernary(text) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                const ch = text[i];
+                const trits = ASCII_TO_TERNARY[ch];
+                if (trits) {
+                    result += trits;
+                } else {
+                    result += '?????';
+                }
+            }
+            return result;
+        }
+
+        function ternaryToText(trits) {
+            trits = trits.replace(/\s/g, '');
+            if (trits.length % 5 !== 0) {
+                throw new Error('Ternary string length must be a multiple of 5');
+            }
+            let result = '';
+            for (let i = 0; i < trits.length; i += 5) {
+                const chunk = trits.substr(i, 5);
+                const char = TERNARY_TO_ASCII[chunk];
+                if (char) {
+                    result += char;
+                } else {
+                    result += '?';
+                }
+            }
+            return result;
+        }
+
+        function formatTernary(trits) {
+            const groups = trits.match(/.{5}/g);
+            return groups ? groups.join(' ') : trits;
+        }
+
+        // ============================================================
+        // 2. ENIGMA ROTOR
+        // ============================================================
+        const ROTORS = [
+            [0, 1, 2],
+            [1, 2, 0],
+            [2, 0, 1]
+        ];
+        const REFLECTOR = [2, 1, 0];
+
+        function applyRotor(symbol, rotor, inverse) {
+            if (inverse) {
+                return rotor.indexOf(symbol);
+            } else {
+                return rotor[symbol];
+            }
+        }
+
+        function enigmaTransform(inputTrits) {
+            const cleaned = inputTrits.replace(/[^012]/g, '');
+            if (cleaned.length === 0) return '';
+
+            let positions = [0, 0, 0];
+            let output = '';
+
+            for (let ch of cleaned) {
+                let val = parseInt(ch, 10);
+                val = (val + positions[0]) % 3;
+                val = applyRotor(val, ROTORS[0], false);
+                val = applyRotor(val, ROTORS[1], false);
+                val = applyRotor(val, ROTORS[2], false);
+                val = REFLECTOR[val];
+                val = applyRotor(val, ROTORS[2], true);
+                val = applyRotor(val, ROTORS[1], true);
+                val = applyRotor(val, ROTORS[0], true);
+                val = (val - positions[0] + 3) % 3;
+                output += String(val);
+                positions[0] = (positions[0] + 1) % 3;
+                if (positions[0] === 0) {
+                    positions[1] = (positions[1] + 1) % 3;
+                    if (positions[1] === 0) {
+                        positions[2] = (positions[2] + 1) % 3;
+                    }
+                }
+            }
+            return output;
+        }
+
+        // ============================================================
+        // 3. TVM
+        // ============================================================
+        function tvmTernaryToInt(trits) {
+            let val = 0;
+            for (let ch of trits) {
+                val = val * 3 + parseInt(ch, 10);
+            }
+            return val;
+        }
+
+        function tvmIntToTernary(n, len) {
+            len = len || 5;
+            if (n === 0) return '0'.repeat(len);
+            let digits = '';
+            while (n > 0) {
+                digits = (n % 3) + digits;
+                n = Math.floor(n / 3);
+            }
+            return digits.padStart(len, '0');
+        }
+
+        function runTVM() {
+            const regs = {
+                R0: '00000',
+                R1: '00000',
+                R2: '00000',
+                R3: '00000',
+                R4: '00000',
+                R5: '00000'
+            };
+            regs.R0 = tvmIntToTernary(5, 5);
+            regs.R1 = tvmIntToTernary(3, 5);
+            const a = tvmTernaryToInt(regs.R0);
+            const b = tvmTernaryToInt(regs.R1);
+            const sum = a + b;
+            regs.R0 = tvmIntToTernary(sum, 5);
+            regs.R5 = (sum >= 243) ? '00001' : '00000';
+            return regs;
+        }
+
+        // ============================================================
+        // 4. scalePRT
+        // ============================================================
+        function computeScalePRT(fwhmHz, tempK) {
+            const kB = 1.380649e-23;
+            const h = 6.62607015e-34;
+            const lambda = 780e-9;
+            const pi = Math.PI;
+            const log2_3 = Math.log2(3);
+
+            if (fwhmHz <= 0) {
+                return { scalePRT: Infinity, ratio: Infinity };
+            }
+
+            const E_landauer = kB * tempK * Math.log(2);
+            const E_resonance = h * fwhmHz;
+            const ratio = E_landauer / E_resonance;
+            const scalePRT = (lambda / (2 * pi)) * ratio / log2_3;
+
+            return { scalePRT, ratio };
+        }
+
+        // ============================================================
+        // DOM
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Ternary ASCII
+            const textInput = document.getElementById('textInput');
+            const ternaryOutput = document.getElementById('ternaryOutput');
+            const ternaryError = document.getElementById('ternaryError');
+
+            document.getElementById('toTernaryBtn').addEventListener('click', function() {
+                ternaryError.style.display = 'none';
+                try {
+                    const text = textInput.value;
+                    const result = textToTernary(text);
+                    ternaryOutput.textContent = formatTernary(result);
+                } catch (e) {
+                    ternaryError.textContent = 'Error: ' + e.message;
+                    ternaryError.style.display = 'block';
+                }
+            });
+
+            document.getElementById('toTextBtn').addEventListener('click', function() {
+                ternaryError.style.display = 'none';
+                try {
+                    const raw = ternaryOutput.textContent.replace(/\s/g, '');
+                    if (raw.length === 0) {
+                        ternaryError.textContent = 'No ternary data to decode';
+                        ternaryError.style.display = 'block';
+                        return;
+                    }
+                    const result = ternaryToText(raw);
+                    textInput.value = result;
+                } catch (e) {
+                    ternaryError.textContent = 'Error: ' + e.message;
+                    ternaryError.style.display = 'block';
+                }
+            });
+
+            // Enigma
+            const rotorInput = document.getElementById('rotorInput');
+            const rotorOutput = document.getElementById('rotorOutput');
+            const rotorError = document.getElementById('rotorError');
+
+            document.getElementById('rotorBtn').addEventListener('click', function() {
+                rotorError.style.display = 'none';
+                const input = rotorInput.value;
+                if (!input) {
+                    rotorError.textContent = 'Please enter ternary string (0,1,2)';
+                    rotorError.style.display = 'block';
+                    return;
+                }
+                try {
+                    const output = enigmaTransform(input);
+                    if (output.length === 0) {
+                        rotorError.textContent = 'No valid ternary digits (0,1,2) found';
+                        rotorError.style.display = 'block';
+                        rotorOutput.textContent = '(empty)';
+                        return;
+                    }
+                    rotorOutput.textContent = formatTernary(output);
+                } catch (e) {
+                    rotorError.textContent = 'Error: ' + e.message;
+                    rotorError.style.display = 'block';
+                }
+            });
+
+            // TVM
+            document.getElementById('tvmBtn').addEventListener('click', function() {
+                const regs = runTVM();
+                document.getElementById('r0').textContent = regs.R0;
+                document.getElementById('r1').textContent = regs.R1;
+                document.getElementById('r2').textContent = regs.R2;
+                document.getElementById('r3').textContent = regs.R3;
+                document.getElementById('r4').textContent = regs.R4;
+                document.getElementById('r5').textContent = regs.R5;
+
+                const result = tvmTernaryToInt(regs.R0);
+                const resultTernary = regs.R0;
+                document.getElementById('tvmOutput').textContent =
+                    `Result (R0) = ${result} (${resultTernary}₃) ✅`;
+            });
+
+            // scalePRT
+            const fwhmInput = document.getElementById('fwhm');
+            const tempInput = document.getElementById('temp');
+            const scaleOutput = document.getElementById('scaleOutput');
+            const scaleRatio = document.getElementById('scaleRatio');
+
+            document.getElementById('scaleBtn').addEventListener('click', function() {
+                const fwhm = parseFloat(fwhmInput.value) || 41700;
+                const temp = parseFloat(tempInput.value) || 300;
+
+                const result = computeScalePRT(fwhm, temp);
+
+                if (!isFinite(result.scalePRT) || result.scalePRT <= 0) {
+                    scaleOutput.textContent = 'scalePRT: ∞ (no resonance)';
+                    scaleRatio.textContent = 'Ratio: N/A';
+                    return;
+                }
+
+                scaleOutput.textContent = `scalePRT = ${result.scalePRT.toExponential(4)} m`;
+                scaleRatio.textContent = `Ratio to Landauer limit: ${result.ratio.toExponential(4)}×`;
+            });
+
+            // Initial triggers
+            document.getElementById('toTernaryBtn').click();
+            document.getElementById('tvmBtn').click();
+            document.getElementById('scaleBtn').click();
+            document.getElementById('rotorBtn').click();
+        });
+    </script>
+</body>
+</html>
