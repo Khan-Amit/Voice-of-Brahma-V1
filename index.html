@@ -1,104 +1,719 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Voice-of-Brahma-V1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice-of-Brahma-V1 – Universal Ternary Platform</title>
     <style>
-        body { background: #0a0e14; color: #e0e6ed; font-family: monospace; padding: 2rem; max-width: 800px; margin: auto; }
-        .card { background: #141a22; border: 1px solid #2a3340; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
-        input, button { background: #0a0e14; border: 1px solid #2a3340; color: white; padding: 0.5rem; font-family: monospace; }
-        button { background: #2a6b40; cursor: pointer; margin-right: 0.5rem; }
-        .output { background: #0a0e14; border: 1px solid #2a3340; padding: 0.5rem; margin-top: 0.5rem; white-space: pre-wrap; word-break: break-all; }
-        .back { color: #5ecf82; text-decoration: none; display: inline-block; margin-bottom: 1rem; }
-    </style>
-</head>
-<body>
-    <h1 style="color:#5ecf82;">🗣️ Voice-of-Brahma-V1</h1>
-    <p><span style="color:#5ecf82;">Data-driven</span> · No hardcode · All data from <code>data/</code> folder</p>
-
-    <div class="card">
-        <h2 style="color:#5ecf82;">📝 ASCII ↔ Ternary</h2>
-        <label>Enter text:</label><br>
-        <input type="text" id="input" value="Hello, World!" style="width:100%;">
-        <div style="margin:0.5rem 0;">
-            <button onclick="toTernary()">→ Ternary</button>
-            <button onclick="toBinary()">→ Binary</button>
-            <button onclick="toText()">← Text</button>
-            <button onclick="showStatus()">📊 Status</button>
-        </div>
-        <div class="output" id="output">Click a button</div>
-        <div id="error" style="color:#ff6b6b; display:none;"></div>
-        <div id="status" style="color:#5ecf82; font-size:0.8rem; margin-top:0.5rem;"></div>
-    </div>
-
-    <script src="engine.js"></script>
-    <script>
-        // Wait for engine to load
-        function waitForEngine() {
-            return new Promise((resolve) => {
-                const check = () => {
-                    if (engine._loaded) {
-                        resolve();
-                    } else {
-                        setTimeout(check, 100);
-                    }
-                };
-                check();
-            });
+        /* ================================================================
+           RESET & BASE
+           ================================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        async function toTernary() {
-            await waitForEngine();
-            const text = document.getElementById('input').value;
-            const result = engine.textToTernary(text);
-            document.getElementById('output').textContent = 'Ternary (5‑trit):\n' + engine.formatTernary(result);
+        body {
+            background: #0a0e14;
+            color: #e0e6ed;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+            line-height: 1.6;
         }
 
-        async function toBinary() {
-            await waitForEngine();
-            const text = document.getElementById('input').value;
-            const bin = engine.textToBinary(text);
-            document.getElementById('output').textContent = 'Binary (8‑bit):\n' + engine.formatBinary(bin);
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        async function toText() {
-            await waitForEngine();
-            const raw = document.getElementById('output').textContent.replace(/\s/g, '');
-            const err = document.getElementById('error');
-            err.style.display = 'none';
-            try {
-                if (/^[012]+$/.test(raw)) {
-                    document.getElementById('input').value = engine.ternaryToText(raw);
-                } else if (/^[01]+$/.test(raw)) {
-                    document.getElementById('input').value = engine.binaryToText(raw);
-                } else {
-                    err.textContent = 'Unknown format – use ternary (0,1,2) or binary (0,1)';
-                    err.style.display = 'block';
-                }
-            } catch (e) {
-                err.textContent = e.message;
-                err.style.display = 'block';
+        /* ================================================================
+           HEADER
+           ================================================================ */
+        header {
+            text-align: center;
+            padding: 3rem 0 2rem 0;
+            border-bottom: 1px solid rgba(94, 207, 130, 0.2);
+            margin-bottom: 2.5rem;
+        }
+
+        header h1 {
+            font-size: 3.2rem;
+            font-weight: 300;
+            letter-spacing: 6px;
+            color: #5ecf82;
+            text-shadow: 0 0 40px rgba(94, 207, 130, 0.1);
+        }
+
+        header h1 span {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        header p {
+            color: #8899aa;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        header .badge-group {
+            margin-top: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(94, 207, 130, 0.1);
+            color: #5ecf82;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(94, 207, 130, 0.15);
+        }
+
+        .badge.gold {
+            background: rgba(255, 215, 0, 0.1);
+            color: #ffd700;
+            border-color: rgba(255, 215, 0, 0.2);
+        }
+
+        /* ================================================================
+           NAVIGATION BAR
+           ================================================================ */
+        .nav-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2.5rem;
+            padding: 0.5rem;
+            background: rgba(20, 26, 34, 0.6);
+            border-radius: 12px;
+            border: 1px solid rgba(42, 51, 64, 0.5);
+            justify-content: center;
+        }
+
+        .nav-bar a {
+            color: #8899aa;
+            text-decoration: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .nav-bar a:hover {
+            background: rgba(94, 207, 130, 0.1);
+            color: #5ecf82;
+        }
+
+        .nav-bar a.active {
+            background: #2a6b40;
+            color: white;
+        }
+
+        /* ================================================================
+           STATUS DASHBOARD
+           ================================================================ */
+        .status-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .status-card {
+            background: #141a22;
+            border: 1px solid #2a3340;
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        .status-card:hover {
+            border-color: #5ecf82;
+        }
+
+        .status-card .number {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #5ecf82;
+            display: block;
+        }
+
+        .status-card .label {
+            font-size: 0.7rem;
+            color: #8899aa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.2rem;
+        }
+
+        .status-card .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        .status-card .status-dot.online {
+            background: #5ecf82;
+        }
+
+        .status-card .status-dot.offline {
+            background: #ff6b6b;
+        }
+
+        /* ================================================================
+           MAIN GRID
+           ================================================================ */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
             }
         }
 
-        async function showStatus() {
-            await waitForEngine();
-            const energy = engine.getEnergyMatrix();
-            const scale = engine.getScaleMatrix();
-            const status = document.getElementById('status');
-            status.innerHTML = `Energy matrix: ${Object.keys(energy).length} entries<br>` +
-                              `Scale matrix: ${Object.keys(scale).length} entries<br>` +
-                              `ASCII table: ${Object.keys(engine.asciiTable).length} characters<br>` +
-                              `Engine: loaded ✅`;
+        .card {
+            background: #141a22;
+            border: 1px solid #2a3340;
+            border-radius: 12px;
+            padding: 1.8rem;
+            transition: border-color 0.2s;
         }
 
-        // Auto-run on load
-        window.onload = function() {
+        .card:hover {
+            border-color: #5ecf82;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #5ecf82;
+            border-bottom: 1px solid #2a3340;
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card h2 .icon {
+            font-size: 1.4rem;
+        }
+
+        /* ================================================================
+           FORM ELEMENTS
+           ================================================================ */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            font-size: 0.8rem;
+            color: #8899aa;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .input-group input,
+        .input-group textarea {
+            background: #0a0e14;
+            border: 1px solid #2a3340;
+            border-radius: 8px;
+            color: #e0e6ed;
+            padding: 0.7rem 1rem;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.95rem;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #5ecf82;
+            box-shadow: 0 0 0 3px rgba(94, 207, 130, 0.1);
+        }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 0.5rem 0 1rem 0;
+        }
+
+        .btn {
+            background: #2a6b40;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.4rem;
+            color: white;
+            font-family: inherit;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn:hover {
+            background: #3a8b5a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(42, 107, 64, 0.3);
+        }
+
+        .btn-secondary {
+            background: #1a2a24;
+            border: 1px solid #2a6b40;
+        }
+
+        .btn-secondary:hover {
+            background: #2a3a34;
+            box-shadow: none;
+        }
+
+        .btn-gold {
+            background: #8a7a2a;
+            border: 1px solid #ffd700;
+        }
+
+        .btn-gold:hover {
+            background: #aa9a3a;
+        }
+
+        /* ================================================================
+           OUTPUT BOX
+           ================================================================ */
+        .output-box {
+            background: #0a0e14;
+            border: 1px solid #2a3340;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            min-height: 3rem;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #b0c4de;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .output-box .placeholder {
+            color: #556677;
+            font-style: italic;
+        }
+
+        .error-box {
+            color: #ff6b6b;
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+            display: none;
+        }
+
+        /* ================================================================
+           MATRIX TABLE
+           ================================================================ */
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .matrix-table th {
+            background: #0a0e14;
+            color: #5ecf82;
+            text-align: left;
+            padding: 0.4rem 0.6rem;
+            border-bottom: 2px solid #2a3340;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .matrix-table td {
+            padding: 0.3rem 0.6rem;
+            border-bottom: 1px solid #1a2a24;
+            color: #b0c4de;
+        }
+
+        .matrix-table tr:hover td {
+            background: rgba(94, 207, 130, 0.03);
+        }
+
+        .matrix-table .highlight {
+            color: #5ecf82;
+            font-weight: 500;
+        }
+
+        /* ================================================================
+           RESPONSIVE
+           ================================================================ */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+            header h1 {
+                font-size: 2.2rem;
+                letter-spacing: 3px;
+            }
+            .nav-bar a {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+            .status-dashboard {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .card {
+                padding: 1.2rem;
+            }
+        }
+
+        /* ================================================================
+           SCROLLBAR
+           ================================================================ */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0e14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a6b40;
+            border-radius: 4px;
+        }
+
+        /* ================================================================
+           FOOTER
+           ================================================================ */
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #2a3340;
+            color: #556677;
+            font-size: 0.8rem;
+        }
+
+        .footer strong {
+            color: #5ecf82;
+        }
+
+        .footer a {
+            color: #5ecf82;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ============================================================
+        HEADER
+        ============================================================ -->
+        <header>
+            <h1>🗣️ Voice-of-<span>Brahma</span>-V1</h1>
+            <p>Universal Ternary Language Platform · Data‑Driven · No Hardcode</p>
+            <div class="badge-group">
+                <span class="badge">5‑trit ASCII</span>
+                <span class="badge">scalePRT</span>
+                <span class="badge gold">Engine v1.0</span>
+                <span class="badge">All data from <code style="color:#5ecf82;">data/</code></span>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        NAVIGATION
+        ============================================================ -->
+        <nav class="nav-bar">
+            <a href="index.html" class="active">📝 ASCII</a>
+            <a href="python.html">🐍 Python</a>
+            <a href="c.html">⚙️ C</a>
+            <a href="linux.html">🐧 Linux</a>
+            <a href="html.html">🌐 HTML</a>
+            <a href="energy.html">⚡ Energy</a>
+        </nav>
+
+        <!-- ============================================================
+        STATUS DASHBOARD
+        ============================================================ -->
+        <div class="status-dashboard" id="statusDashboard">
+            <div class="status-card">
+                <span class="number" id="asciiCount">—</span>
+                <span class="label">ASCII Characters</span>
+            </div>
+            <div class="status-card">
+                <span class="number" id="energyCount">—</span>
+                <span class="label">Energy Entries</span>
+            </div>
+            <div class="status-card">
+                <span class="number" id="scaleCount">—</span>
+                <span class="label">Scale Entries</span>
+            </div>
+            <div class="status-card">
+                <span class="number" id="engineStatus">—</span>
+                <span class="label">
+                    <span class="status-dot online" id="statusDot"></span>
+                    Engine
+                </span>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        MAIN GRID
+        ============================================================ -->
+        <div class="main-grid">
+
+            <!-- LEFT: Translator -->
+            <div class="card">
+                <h2><span class="icon">📝</span> ASCII ↔ Ternary</h2>
+                <div class="input-group">
+                    <label for="textInput">Enter text (ASCII):</label>
+                    <input type="text" id="textInput" value="Hello, World!" placeholder="Type something..." />
+                </div>
+                <div class="btn-group">
+                    <button class="btn" id="btnToTernary">→ Ternary</button>
+                    <button class="btn" id="btnToBinary">→ Binary</button>
+                    <button class="btn btn-secondary" id="btnToText">← Text</button>
+                </div>
+                <div class="output-box" id="outputBox">
+                    <span class="placeholder">Click a button to translate</span>
+                </div>
+                <div class="error-box" id="errorBox"></div>
+            </div>
+
+            <!-- RIGHT: Energy Matrix Preview -->
+            <div class="card">
+                <h2><span class="icon">⚡</span> Energy Matrix</h2>
+                <div style="max-height: 180px; overflow-y: auto;">
+                    <table class="matrix-table" id="energyTable">
+                        <thead>
+                            <tr>
+                                <th>FWHM (Hz)</th>
+                                <th>Energy (eV)</th>
+                                <th>Ratio to Landauer</th>
+                            </tr>
+                        </thead>
+                        <tbody id="energyBody">
+                            <tr><td colspan="3" style="color:#556677; text-align:center;">Loading data...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-top: 0.8rem; text-align: right; font-size: 0.75rem; color: #8899aa;">
+                    <a href="energy.html" style="color:#5ecf82; text-decoration:none;">View full matrix →</a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================
+        SCALE MATRIX (Full width)
+        ============================================================ -->
+        <div class="card" style="margin-bottom: 2.5rem;">
+            <h2><span class="icon">📐</span> Scale Matrix (Groove Coupling Length)</h2>
+            <div style="max-height: 200px; overflow-y: auto;">
+                <table class="matrix-table" id="scaleTable">
+                    <thead>
+                        <tr>
+                            <th>FWHM (Hz)</th>
+                            <th>Coupling Length (m)</th>
+                            <th>Ratio to Landauer</th>
+                            <th>Profile</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scaleBody">
+                        <tr><td colspan="4" style="color:#556677; text-align:center;">Loading data...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        FOOTER
+        ============================================================ -->
+        <div class="footer">
+            <strong>Voice-of-Brahma-V1</strong> · All Rights Reserved ® Seliim Ahmed ·
+            <a href="mailto:amit.khanna.1082@gmail.com">amit.khanna.1082@gmail.com</a>
+        </div>
+
+    </div>
+
+    <!-- ================================================================
+    ENGINE & UI LOGIC
+    ================================================================ -->
+    <script src="engine.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ---- Wait for engine to load ----
+            function waitForEngine() {
+                return new Promise((resolve) => {
+                    const check = () => {
+                        if (engine._loaded) {
+                            resolve();
+                        } else {
+                            setTimeout(check, 100);
+                        }
+                    };
+                    check();
+                });
+            }
+
+            // ---- Update Status Dashboard ----
+            function updateDashboard() {
+                const asciiCount = Object.keys(engine.asciiTable || {}).length;
+                const energy = engine.getEnergyMatrix ? engine.getEnergyMatrix() : {};
+                const scale = engine.getScaleMatrix ? engine.getScaleMatrix() : {};
+                const energyCount = Object.keys(energy).length;
+                const scaleCount = Object.keys(scale).length;
+
+                document.getElementById('asciiCount').textContent = asciiCount || '—';
+                document.getElementById('energyCount').textContent = energyCount || '—';
+                document.getElementById('scaleCount').textContent = scaleCount || '—';
+
+                const status = engine._loaded ? 'Online' : 'Offline';
+                document.getElementById('engineStatus').textContent = status;
+                const dot = document.getElementById('statusDot');
+                dot.className = 'status-dot ' + (engine._loaded ? 'online' : 'offline');
+            }
+
+            // ---- Render Energy Matrix ----
+            function renderEnergyMatrix() {
+                const energy = engine.getEnergyMatrix ? engine.getEnergyMatrix() : {};
+                const tbody = document.getElementById('energyBody');
+                const entries = Object.values(energy);
+                if (entries.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="color:#556677; text-align:center;">No data</td></tr>';
+                    return;
+                }
+                // Show first 5 entries
+                const display = entries.slice(0, 5);
+                tbody.innerHTML = display.map(e => `
+                    <tr>
+                        <td>${e.fwhm_hz.toLocaleString()}</td>
+                        <td>${e.resonance_energy_ev.toExponential(4)}</td>
+                        <td>${e.ratio_to_landauer.toExponential(4)}</td>
+                    </tr>
+                `).join('');
+                if (entries.length > 5) {
+                    tbody.innerHTML += `<tr><td colspan="3" style="color:#556677; text-align:center;">+ ${entries.length - 5} more entries → see Energy page</td></tr>`;
+                }
+            }
+
+            // ---- Render Scale Matrix ----
+            function renderScaleMatrix() {
+                const scale = engine.getScaleMatrix ? engine.getScaleMatrix() : {};
+                const tbody = document.getElementById('scaleBody');
+                const entries = Object.values(scale);
+                if (entries.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="color:#556677; text-align:center;">No data</td></tr>';
+                    return;
+                }
+                const display = entries.slice(0, 5);
+                tbody.innerHTML = display.map(e => `
+                    <tr>
+                        <td>${e.fwhm_hz.toLocaleString()}</td>
+                        <td class="highlight">${e.groove_coupling_length_m.toExponential(4)}</td>
+                        <td>${e.ratio_to_landauer.toExponential(4)}</td>
+                        <td style="font-size:0.7rem; color:#8899aa;">${e.profile_name || '—'}</td>
+                    </tr>
+                `).join('');
+                if (entries.length > 5) {
+                    tbody.innerHTML += `<tr><td colspan="4" style="color:#556677; text-align:center;">+ ${entries.length - 5} more entries → see Energy page</td></tr>`;
+                }
+            }
+
+            // ---- UI Functions ----
+            async function toTernary() {
+                await waitForEngine();
+                const input = document.getElementById('textInput').value;
+                const output = document.getElementById('outputBox');
+                const error = document.getElementById('errorBox');
+                error.style.display = 'none';
+                try {
+                    const result = engine.textToTernary(input);
+                    output.textContent = 'Ternary (5‑trit):\n' + engine.formatTernary(result);
+                } catch (e) {
+                    error.textContent = 'Error: ' + e.message;
+                    error.style.display = 'block';
+                }
+            }
+
+            async function toBinary() {
+                await waitForEngine();
+                const input = document.getElementById('textInput').value;
+                const output = document.getElementById('outputBox');
+                const error = document.getElementById('errorBox');
+                error.style.display = 'none';
+                try {
+                    const result = engine.textToBinary(input);
+                    output.textContent = 'Binary (8‑bit):\n' + engine.formatBinary(result);
+                } catch (e) {
+                    error.textContent = 'Error: ' + e.message;
+                    error.style.display = 'block';
+                }
+            }
+
+            async function toText() {
+                await waitForEngine();
+                const output = document.getElementById('outputBox');
+                const error = document.getElementById('errorBox');
+                error.style.display = 'none';
+                try {
+                    const raw = output.textContent.replace(/\s/g, '');
+                    if (/^[012]+$/.test(raw)) {
+                        document.getElementById('textInput').value = engine.ternaryToText(raw);
+                    } else if (/^[01]+$/.test(raw)) {
+                        document.getElementById('textInput').value = engine.binaryToText(raw);
+                    } else {
+                        error.textContent = 'Unknown format – use ternary (0,1,2) or binary (0,1)';
+                        error.style.display = 'block';
+                    }
+                } catch (e) {
+                    error.textContent = e.message;
+                    error.style.display = 'block';
+                }
+            }
+
+            // ---- Bind Buttons ----
+            document.getElementById('btnToTernary').addEventListener('click', toTernary);
+            document.getElementById('btnToBinary').addEventListener('click', toBinary);
+            document.getElementById('btnToText').addEventListener('click', toText);
+
+            // ---- Initial Load ----
             waitForEngine().then(() => {
-                document.getElementById('output').textContent = 'Engine loaded. Click a button.';
-                showStatus();
+                updateDashboard();
+                renderEnergyMatrix();
+                renderScaleMatrix();
+                // Auto-run first translation
+                toTernary();
             });
-        };
+
+        });
     </script>
 </body>
 </html>
