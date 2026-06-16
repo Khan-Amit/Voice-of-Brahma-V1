@@ -45,7 +45,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             gap: 1.5rem;
         }
 
@@ -123,11 +123,13 @@
             padding: 0.8rem;
             min-height: 2.5rem;
             font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             word-break: break-all;
             margin-top: 0.5rem;
             color: #b0c4de;
             white-space: pre-wrap;
+            max-height: 150px;
+            overflow-y: auto;
         }
 
         .badge {
@@ -179,10 +181,21 @@
             color: #5ecf82;
         }
 
+        .error {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+        }
+
         @media (max-width: 640px) {
-            body { padding: 1rem; }
-            header h1 { font-size: 2rem; }
-            .grid { grid-template-columns: 1fr; }
+            body {
+                padding: 1rem;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -208,28 +221,30 @@
                 </div>
                 <div class="output-box" id="ternaryOutput">02102 02112 02112 02121 02143 01001 02120 02121 02140 02112 02130 01011</div>
                 <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;">
-                    Each char = 5 trits. Space = 01012
+                    Each char = 5 trits · Space = 01012
                 </div>
+                <div id="ternaryError" class="error" style="display:none;"></div>
             </div>
 
             <!-- 2. Enigma Rotor Simulator -->
             <div class="card">
                 <h2>🌀 Enigma Rotor Simulator</h2>
                 <div class="input-group">
-                    <label for="rotorInput">Enter ternary string (0,1,2):</label>
-                    <input type="text" id="rotorInput" value="021020211202112021210214301001021200212102140021120213001011" placeholder="e.g. 02102..." />
+                    <label for="rotorInput">Enter ternary string (0,1,2 only):</label>
+                    <input type="text" id="rotorInput" value="021020211202112021210214301001" placeholder="e.g. 02102..." />
                 </div>
                 <button class="btn" id="rotorBtn">🔀 Apply Rotors</button>
                 <div class="output-box" id="rotorOutput">(encrypted ternary will appear here)</div>
                 <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;">
-                    Rotors: I, II, III · Reflector: -1↔+1
+                    Rotors: I, II, III · Reflector: -1 ↔ +1
                 </div>
+                <div id="rotorError" class="error" style="display:none;"></div>
             </div>
 
             <!-- 3. TVM Demo -->
             <div class="card">
                 <h2>⚙️ TVM – Add Program</h2>
-                <p style="font-size:0.9rem; color:#8899aa;">Program: LOAD R0, 5  |  LOAD R1, 3  |  ADD  |  HALT</p>
+                <p style="font-size:0.9rem; color:#8899aa;">Program: LOAD R0, 5 | LOAD R1, 3 | ADD | HALT</p>
                 <button class="btn" id="tvmBtn">▶ Run TVM</button>
                 <div style="margin-top:0.8rem;">
                     <div><strong>Registers after execution:</strong></div>
@@ -258,7 +273,7 @@
                 </div>
                 <button class="btn" id="scaleBtn">⚡ Compute scalePRT</button>
                 <div class="output-box" id="scaleOutput">scalePRT = 1.6e-35 m</div>
-                <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;">
+                <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;" id="scaleRatio">
                     Ratio to Landauer limit: 50.2×
                 </div>
             </div>
@@ -266,28 +281,30 @@
         </div>
 
         <div class="footer">
-            <strong>Voice-of-Brahma-V1</strong> · All Rights Reserved ® Seliim Ahmed · 
+            <strong>Voice-of-Brahma-V1</strong> · All Rights Reserved ® Seliim Ahmed ·
             <a href="mailto:amit.khanna.1082@gmail.com" style="color:#5ecf82;">amit.khanna.1082@gmail.com</a>
         </div>
     </div>
 
     <script>
-        // ------------------------------------------------
-        // 1. Ternary ASCII Codec (5‑trit)
-        // ------------------------------------------------
+        // ============================================================
+        // 1. TERNARY ASCII CODEC (5‑trit)
+        // ============================================================
         const ASCII_TO_TERNARY = {};
         const TERNARY_TO_ASCII = {};
-        for (let code = 0; code < 128; code++) {
-            let n = code;
-            let trits = '';
-            if (n === 0) trits = '00000';
-            else {
-                while (n > 0) {
-                    trits = (n % 3) + trits;
-                    n = Math.floor(n / 3);
-                }
-                trits = trits.padStart(5, '0');
+
+        function intToTernary5(n) {
+            if (n === 0) return '00000';
+            let digits = '';
+            while (n > 0) {
+                digits = (n % 3) + digits;
+                n = Math.floor(n / 3);
             }
+            return digits.padStart(5, '0');
+        }
+
+        for (let code = 0; code < 128; code++) {
+            const trits = intToTernary5(code);
             const char = String.fromCharCode(code);
             ASCII_TO_TERNARY[char] = trits;
             ASCII_TO_TERNARY[code] = trits;
@@ -295,32 +312,48 @@
         }
 
         function textToTernary(text) {
-            return text.split('').map(ch => ASCII_TO_TERNARY[ch] || '?????').join('');
-        }
-
-        function ternaryToText(trits) {
-            if (trits.length % 5 !== 0) throw new Error('Length must be multiple of 5');
             let result = '';
-            for (let i = 0; i < trits.length; i += 5) {
-                const chunk = trits.substr(i, 5);
-                result += TERNARY_TO_ASCII[chunk] || '?';
+            for (let ch of text) {
+                const t = ASCII_TO_TERNARY[ch];
+                if (t) result += t;
+                else result += '?????';
             }
             return result;
         }
 
-        // ------------------------------------------------
-        // 2. Enigma Rotor Simulator (simplified)
-        // ------------------------------------------------
-        // Rotor permutations (ternary values -1,0,1 mapped to 0,1,2)
+        function ternaryToText(trits) {
+            // remove spaces and newlines
+            trits = trits.replace(/\s/g, '');
+            if (trits.length % 5 !== 0) {
+                throw new Error('Ternary string length must be multiple of 5');
+            }
+            let result = '';
+            for (let i = 0; i < trits.length; i += 5) {
+                const chunk = trits.substr(i, 5);
+                const char = TERNARY_TO_ASCII[chunk];
+                if (char) result += char;
+                else result += '?';
+            }
+            return result;
+        }
+
+        function formatTernary(trits) {
+            // group by 5 with spaces
+            const groups = trits.match(/.{5}/g);
+            return groups ? groups.join(' ') : trits;
+        }
+
+        // ============================================================
+        // 2. ENIGMA ROTOR SIMULATOR
+        // ============================================================
         const ROTORS = [
-            [0, 1, 2],   // I (identity)
-            [1, 2, 0],   // II (shift left)
-            [2, 0, 1]    // III (shift right)
+            [0, 1, 2],
+            [1, 2, 0],
+            [2, 0, 1]
         ];
-        const REFLECTOR = [2, 1, 0]; // -1 ↔ +1, 0 stays
+        const REFLECTOR = [2, 1, 0];
 
         function applyRotor(symbol, rotor, inverse) {
-            // symbol: 0,1,2
             if (inverse) {
                 return rotor.indexOf(symbol);
             } else {
@@ -329,11 +362,14 @@
         }
 
         function enigmaTransform(inputTrits) {
-            // input: string of 0,1,2
+            // Remove all non-0,1,2 characters
+            const cleaned = inputTrits.replace(/[^012]/g, '');
+            if (cleaned.length === 0) return '';
+
             let positions = [0, 0, 0];
             let output = '';
-            for (let ch of inputTrits) {
-                if (ch < '0' || ch > '2') { output += ch; continue; }
+
+            for (let ch of cleaned) {
                 let val = parseInt(ch, 10);
                 // Shift by rotor positions
                 val = (val + positions[0]) % 3;
@@ -362,89 +398,148 @@
             return output;
         }
 
-        // ------------------------------------------------
-        // 3. TVM Simulator (add program)
-        // ------------------------------------------------
-        function runTVM() {
-            // Simulate: LOAD R0, 5 (00005₃) ; LOAD R1, 3 (00003₃) ; ADD ; HALT
-            const regs = { R0: '00000', R1: '00000', R2: '00000', R3: '00000', R4: '00000', R5: '00000' };
-            // Execute
-            let pc = 0;
-            const memory = [
-                { op: 'LOAD', reg: 'R0', val: 5 },
-                { op: 'LOAD', reg: 'R1', val: 3 },
-                { op: 'ADD' },
-                { op: 'HALT' }
-            ];
-            while (pc < memory.length) {
-                const instr = memory[pc];
-                if (instr.op === 'LOAD') {
-                    regs[instr.reg] = String(instr.val).padStart(5, '0');
-                } else if (instr.op === 'ADD') {
-                    const a = parseInt(regs.R0, 10);
-                    const b = parseInt(regs.R1, 10);
-                    const sum = a + b;
-                    regs.R0 = String(sum).padStart(5, '0');
-                    regs.R5 = (sum >= 243) ? '00001' : '00000';
-                } else if (instr.op === 'HALT') {
-                    break;
-                }
-                pc++;
+        // ============================================================
+        // 3. TVM SIMULATOR (ternary arithmetic)
+        // ============================================================
+        function intToTernary(n, len) {
+            len = len || 5;
+            if (n === 0) return '0'.repeat(len);
+            let digits = '';
+            while (n > 0) {
+                digits = (n % 3) + digits;
+                n = Math.floor(n / 3);
             }
+            return digits.padStart(len, '0');
+        }
+
+        function ternaryToInt(trits) {
+            let val = 0;
+            for (let ch of trits) {
+                val = val * 3 + parseInt(ch, 10);
+            }
+            return val;
+        }
+
+        function runTVM() {
+            const regs = {
+                R0: '00000',
+                R1: '00000',
+                R2: '00000',
+                R3: '00000',
+                R4: '00000',
+                R5: '00000'
+            };
+
+            // Program: LOAD R0, 5 | LOAD R1, 3 | ADD | HALT
+            // 5 in ternary = 00012₃, 3 = 00010₃
+            const r0_val = 5;
+            const r1_val = 3;
+
+            regs.R0 = intToTernary(r0_val, 5);
+            regs.R1 = intToTernary(r1_val, 5);
+
+            // ADD: R0 = R0 + R1
+            const a = ternaryToInt(regs.R0);
+            const b = ternaryToInt(regs.R1);
+            const sum = a + b;
+            regs.R0 = intToTernary(sum, 5);
+
+            // Set status: carry if >= 243 (5-trit max)
+            regs.R5 = (sum >= 243) ? '00001' : '00000';
+
             return regs;
         }
 
-        // ------------------------------------------------
-        // 4. scalePRT Calculator
-        // ------------------------------------------------
+        // ============================================================
+        // 4. scalePRT CALCULATOR (FIXED)
+        // ============================================================
         function computeScalePRT(fwhmHz, tempK) {
             const kB = 1.380649e-23;
             const h = 6.62607015e-34;
-            const c = 299792458;
-            const lambda = 780e-9;
+            const lambda = 780e-9; // 780 nm
+            const pi = Math.PI;
+            const log2_3 = Math.log2(3);
+
+            if (fwhmHz <= 0) {
+                return { scalePRT: Infinity, ratio: Infinity, E_landauer: 0, E_resonance: 0 };
+            }
+
             const E_landauer = kB * tempK * Math.log(2);
             const E_resonance = h * fwhmHz;
-            if (E_resonance <= 0) return { scalePRT: Infinity, ratio: Infinity };
             const ratio = E_landauer / E_resonance;
-            const scalePRT = (lambda / (2 * Math.PI)) * ratio / Math.log2(3);
+            const scalePRT = (lambda / (2 * pi)) * ratio / log2_3;
+
             return { scalePRT, ratio, E_landauer, E_resonance };
         }
 
-        // ------------------------------------------------
-        // DOM Bindings
-        // ------------------------------------------------
+        // ============================================================
+        // DOM BINDINGS
+        // ============================================================
         document.addEventListener('DOMContentLoaded', function() {
 
-            // Ternary ASCII
+            // --- Ternary ASCII ---
             const textInput = document.getElementById('textInput');
             const ternaryOutput = document.getElementById('ternaryOutput');
+            const ternaryError = document.getElementById('ternaryError');
+
             document.getElementById('toTernaryBtn').addEventListener('click', function() {
-                const text = textInput.value;
+                ternaryError.style.display = 'none';
                 try {
+                    const text = textInput.value;
                     const result = textToTernary(text);
-                    ternaryOutput.textContent = result.match(/.{5}/g).join(' ');
+                    ternaryOutput.textContent = formatTernary(result);
                 } catch (e) {
-                    ternaryOutput.textContent = 'Error: ' + e.message;
+                    ternaryError.textContent = 'Error: ' + e.message;
+                    ternaryError.style.display = 'block';
                 }
             });
+
             document.getElementById('toTextBtn').addEventListener('click', function() {
-                const ternaryRaw = document.getElementById('ternaryOutput').textContent.replace(/\s/g, '');
+                ternaryError.style.display = 'none';
                 try {
-                    const result = ternaryToText(ternaryRaw);
+                    const raw = ternaryOutput.textContent.replace(/\s/g, '');
+                    if (raw.length === 0) {
+                        ternaryError.textContent = 'No ternary data to decode';
+                        ternaryError.style.display = 'block';
+                        return;
+                    }
+                    const result = ternaryToText(raw);
                     textInput.value = result;
                 } catch (e) {
-                    alert('Invalid ternary string: ' + e.message);
+                    ternaryError.textContent = 'Error: ' + e.message;
+                    ternaryError.style.display = 'block';
                 }
             });
 
-            // Enigma Rotor
+            // --- Enigma Rotor ---
+            const rotorInput = document.getElementById('rotorInput');
+            const rotorOutput = document.getElementById('rotorOutput');
+            const rotorError = document.getElementById('rotorError');
+
             document.getElementById('rotorBtn').addEventListener('click', function() {
-                const input = document.getElementById('rotorInput').value.replace(/\s/g, '');
-                const output = enigmaTransform(input);
-                document.getElementById('rotorOutput').textContent = output.match(/.{5}/g)?.join(' ') || output;
+                rotorError.style.display = 'none';
+                const input = rotorInput.value;
+                if (!input) {
+                    rotorError.textContent = 'Please enter ternary string (0,1,2)';
+                    rotorError.style.display = 'block';
+                    return;
+                }
+                try {
+                    const output = enigmaTransform(input);
+                    if (output.length === 0) {
+                        rotorError.textContent = 'No valid ternary digits (0,1,2) found in input';
+                        rotorError.style.display = 'block';
+                        rotorOutput.textContent = '(empty)';
+                        return;
+                    }
+                    rotorOutput.textContent = formatTernary(output);
+                } catch (e) {
+                    rotorError.textContent = 'Error: ' + e.message;
+                    rotorError.style.display = 'block';
+                }
             });
 
-            // TVM Demo
+            // --- TVM ---
             document.getElementById('tvmBtn').addEventListener('click', function() {
                 const regs = runTVM();
                 document.getElementById('r0').textContent = regs.R0;
@@ -453,29 +548,47 @@
                 document.getElementById('r3').textContent = regs.R3;
                 document.getElementById('r4').textContent = regs.R4;
                 document.getElementById('r5').textContent = regs.R5;
-                document.getElementById('tvmOutput').textContent = `Result (R0) = ${parseInt(regs.R0, 10)} (${regs.R0}₃) ✅`;
+
+                const result = ternaryToInt(regs.R0);
+                const resultTernary = regs.R0;
+                document.getElementById('tvmOutput').textContent =
+                    `Result (R0) = ${result} (${resultTernary}₃) ✅`;
             });
 
-            // scalePRT
+            // --- scalePRT ---
+            const fwhmInput = document.getElementById('fwhm');
+            const tempInput = document.getElementById('temp');
+            const scaleOutput = document.getElementById('scaleOutput');
+            const scaleRatio = document.getElementById('scaleRatio');
+
             document.getElementById('scaleBtn').addEventListener('click', function() {
-                const fwhm = parseFloat(document.getElementById('fwhm').value) || 41700;
-                const temp = parseFloat(document.getElementById('temp').value) || 300;
+                const fwhm = parseFloat(fwhmInput.value) || 41700;
+                const temp = parseFloat(tempInput.value) || 300;
+
                 const result = computeScalePRT(fwhm, temp);
-                const output = document.getElementById('scaleOutput');
-                if (!isFinite(result.scalePRT)) {
-                    output.textContent = 'scalePRT: ∞ (no resonance)';
-                } else {
-                    output.textContent = `scalePRT = ${result.scalePRT.toExponential(4)} m`;
-                    document.querySelector('#scaleOutput + div').textContent =
-                        `Ratio to Landauer limit: ${result.ratio.toFixed(2)}×`;
+
+                if (!isFinite(result.scalePRT) || result.scalePRT <= 0) {
+                    scaleOutput.textContent = 'scalePRT: ∞ (no resonance)';
+                    scaleRatio.textContent = 'Ratio: N/A';
+                    return;
                 }
+
+                scaleOutput.textContent = `scalePRT = ${result.scalePRT.toExponential(4)} m`;
+                scaleRatio.textContent = `Ratio to Landauer limit: ${result.ratio.toExponential(4)}×`;
             });
 
-            // Initial display
+            // --- Initial triggers ---
+            // Load initial translation
             document.getElementById('toTernaryBtn').click();
-            document.getElementById('rotorBtn').click();
+
+            // Run initial TVM
             document.getElementById('tvmBtn').click();
+
+            // Compute initial scalePRT
             document.getElementById('scaleBtn').click();
+
+            // Initial rotor demo
+            document.getElementById('rotorBtn').click();
         });
     </script>
 </body>
