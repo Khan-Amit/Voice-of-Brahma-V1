@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice-of-Brahma-V1 – Energy Module</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0e14; color: #e0e6ed; font-family: 'Segoe UI', 'Inter', system-ui, sans-serif; padding: 2rem; min-height: 100vh; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; padding: 2rem 0 1.5rem 0; border-bottom: 1px solid rgba(94, 207, 130, 0.2); margin-bottom: 2rem; }
+        header h1 { font-size: 2.8rem; font-weight: 300; letter-spacing: 4px; color: #5ecf82; }
+        header p { color: #8899aa; font-size: 1rem; margin-top: 0.3rem; }
+        .nav-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; padding: 0.5rem; background: rgba(20, 26, 34, 0.6); border-radius: 12px; border: 1px solid rgba(42, 51, 64, 0.5); justify-content: center; }
+        .nav-bar a { color: #8899aa; text-decoration: none; padding: 0.6rem 1.4rem; border-radius: 8px; font-size: 0.85rem; transition: all 0.2s; font-weight: 500; }
+        .nav-bar a:hover { background: rgba(94, 207, 130, 0.1); color: #5ecf82; }
+        .nav-bar a.active { background: #2a6b40; color: white; }
+        .card { background: #141a22; border: 1px solid #2a3340; border-radius: 12px; padding: 1.8rem; margin-bottom: 2rem; }
+        .card h2 { font-size: 1.2rem; font-weight: 400; color: #5ecf82; border-bottom: 1px solid #2a3340; padding-bottom: 0.75rem; margin-bottom: 1.2rem; }
+        .input-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+        .input-group label { font-size: 0.8rem; color: #8899aa; font-weight: 500; }
+        .input-group input { background: #0a0e14; border: 1px solid #2a3340; border-radius: 8px; color: #e0e6ed; padding: 0.7rem 1rem; font-family: 'Fira Code', monospace; font-size: 0.95rem; width: 100%; }
+        .input-group input:focus { outline: none; border-color: #5ecf82; }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.5rem 0 1rem 0; }
+        .btn { background: #2a6b40; border: none; border-radius: 8px; padding: 0.6rem 1.4rem; color: white; font-family: inherit; font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: all 0.2s; }
+        .btn:hover { background: #3a8b5a; transform: translateY(-1px); }
+        .output-box { background: #0a0e14; border: 1px solid #2a3340; border-radius: 8px; padding: 0.8rem 1rem; min-height: 3rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: #b0c4de; white-space: pre-wrap; word-break: break-all; margin-top: 0.5rem; line-height: 1.6; }
+        .matrix-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 0.5rem; }
+        .matrix-table th { background: #0a0e14; color: #5ecf82; text-align: left; padding: 0.4rem 0.6rem; border-bottom: 2px solid #2a3340; font-weight: 500; }
+        .matrix-table td { padding: 0.3rem 0.6rem; border-bottom: 1px solid #1a2a24; color: #b0c4de; }
+        .matrix-table .highlight { color: #5ecf82; font-weight: 500; }
+        .footer { text-align: center; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #2a3340; color: #556677; font-size: 0.8rem; }
+        .footer strong { color: #5ecf82; }
+        .footer a { color: #5ecf82; text-decoration: none; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1rem; }
+        @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Voice-of-Brahma-V1</h1>
+            <p>Energy & scalePRT Module · <span style="color:#5ecf82;">Engine‑Driven</span></p>
+        </header>
+
+        <nav class="nav-bar">
+            <a href="index.html">📝 ASCII</a>
+            <a href="python.html">🐍 Python</a>
+            <a href="c.html">⚙️ C</a>
+            <a href="linux.html">🐧 Linux</a>
+            <a href="html.html">🌐 HTML</a>
+            <a href="energy.html" class="active">⚡ Energy</a>
+        </nav>
+
+        <div class="card">
+            <h2>⚡ Compute scalePRT</h2>
+            <div class="grid-2">
+                <div>
+                    <div class="input-group">
+                        <label for="fwhm">FWHM (Hz):</label>
+                        <input type="number" id="fwhm" value="41700">
+                    </div>
+                    <div class="input-group">
+                        <label for="temp">Temperature (K):</label>
+                        <input type="number" id="temp" value="300">
+                    </div>
+                    <button class="btn" id="btnCompute">⚡ Compute</button>
+                </div>
+                <div>
+                    <div class="output-box" id="scaleOutput">scalePRT = 8.14e-36 m</div>
+                    <div id="scaleDetail" style="font-size:0.8rem; color:#8899aa; margin-top:0.5rem;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📊 Energy Matrix</h2>
+            <div style="max-height: 250px; overflow-y: auto;">
+                <table class="matrix-table" id="energyTable">
+                    <thead><tr><th>FWHM (Hz)</th><th>Energy (eV)</th><th>Ratio to Landauer</th></tr></thead>
+                    <tbody id="energyBody"><tr><td colspan="3" style="color:#556677; text-align:center;">Loading...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📐 Scale Matrix (Coupling Length)</h2>
+            <div style="max-height: 250px; overflow-y: auto;">
+                <table class="matrix-table" id="scaleTable">
+                    <thead><tr><th>FWHM (Hz)</th><th>Coupling Length (m)</th><th>Ratio to Landauer</th><th>Profile</th></tr></thead>
+                    <tbody id="scaleBody"><tr><td colspan="4" style="color:#556677; text-align:center;">Loading...</td></tr></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="footer">
+            <strong>Voice-of-Brahma-V1</strong> · All Rights Reserved ® Seliim Ahmed ·
+            <a href="mailto:amit.khanna.1082@gmail.com">amit.khanna.1082@gmail.com</a>
+        </div>
+    </div>
+
+    <script src="engine.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function waitForEngine() {
+                return new Promise((resolve) => {
+                    const check = () => {
+                        if (engine._loaded) { resolve(); }
+                        else { setTimeout(check, 100); }
+                    };
+                    check();
+                });
+            }
+
+            function renderEnergyMatrix() {
+                const energy = engine.getEnergyMatrix ? engine.getEnergyMatrix() : {};
+                const tbody = document.getElementById('energyBody');
+                const entries = Object.values(energy);
+                if (entries.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="3" style="color:#556677; text-align:center;">No data</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = entries.map(e => `
+                    <tr>
+                        <td>${e.fwhm_hz.toLocaleString()}</td>
+                        <td>${e.resonance_energy_ev.toExponential(4)}</td>
+                        <td>${e.ratio_to_landauer.toExponential(4)}</td>
+                    </tr>
+                `).join('');
+            }
+
+            function renderScaleMatrix() {
+                const scale = engine.getScaleMatrix ? engine.getScaleMatrix() : {};
+                const tbody = document.getElementById('scaleBody');
+                const entries = Object.values(scale);
+                if (entries.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="color:#556677; text-align:center;">No data</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = entries.map(e => `
+                    <tr>
+                        <td>${e.fwhm_hz.toLocaleString()}</td>
+                        <td class="highlight">${e.groove_coupling_length_m.toExponential(4)}</td>
+                        <td>${e.ratio_to_landauer.toExponential(4)}</td>
+                        <td style="font-size:0.7rem; color:#8899aa;">${e.profile_name || '—'}</td>
+                    </tr>
+                `).join('');
+            }
+
+            async function computeScale() {
+                await waitForEngine();
+                const f = parseFloat(document.getElementById('fwhm').value) || 41700;
+                const t = parseFloat(document.getElementById('temp').value) || 300;
+                const result = engine.computeScale(f, t);
+                if (!result || !result.groove_coupling_length_m) {
+                    document.getElementById('scaleOutput').textContent = 'Error: Invalid input';
+                    return;
+                }
+                document.getElementById('scaleOutput').textContent =
+                    `scalePRT = ${result.groove_coupling_length_m.toExponential(4)} m`;
+                document.getElementById('scaleDetail').innerHTML =
+                    `Ratio to Landauer: ${result.ratio_to_landauer.toExponential(4)}×<br>` +
+                    `Resonance energy: ${result.resonance_energy_ev.toExponential(4)} eV`;
+            }
+
+            document.getElementById('btnCompute').addEventListener('click', computeScale);
+
+            waitForEngine().then(() => {
+                renderEnergyMatrix();
+                renderScaleMatrix();
+                computeScale();
+            });
+        });
+    </script>
+</body>
+</html>
