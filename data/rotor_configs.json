@@ -1,0 +1,29 @@
+{
+  "description": "Enigma-style rotor configurations for ternary encryption",
+  "default": {
+    "rotors": [
+      [0, 1, 2],
+      [1, 2, 0],
+      [2, 0, 1]
+    ],
+    "reflector": [2, 1, 0]
+  },
+  "configs": {
+    "rotor_set_A": {
+      "rotors": [
+        [0, 2, 1],
+        [1, 0, 2],
+        [2, 1, 0]
+      ],
+      "reflector": [0, 1, 2]
+    },
+    "rotor_set_B": {
+      "rotors": [
+        [1, 2, 0],
+        [2, 0, 1],
+        [0, 1, 2]
+      ],
+      "reflector": [2, 0, 1]
+    }
+  }
+}
