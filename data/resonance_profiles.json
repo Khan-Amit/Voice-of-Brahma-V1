@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "description": "Resonance profiles for U-bottom groove configurations",
+  "profiles": [
+    {
+      "id": 1,
+      "name": "Standard U-Groove",
+      "fwhm_hz": 41700,
+      "temp_k": 300,
+      "material": "GeSbTe",
+      "wavelength_nm": 780
+    },
+    {
+      "id": 2,
+      "name": "High-Q U-Groove",
+      "fwhm_hz": 12000,
+      "temp_k": 300,
+      "material": "GeSbTe",
+      "wavelength_nm": 780
+    },
+    {
+      "id": 3,
+      "name": "Low-Q U-Groove",
+      "fwhm_hz": 100000,
+      "temp_k": 300,
+      "material": "GeSbTe",
+      "wavelength_nm": 780
+    },
+    {
+      "id": 4,
+      "name": "Cryogenic U-Groove",
+      "fwhm_hz": 1000,
+      "temp_k": 4,
+      "material": "Superconductor",
+      "wavelength_nm": 780
+    },
+    {
+      "id": 5,
+      "name": "Blue Laser U-Groove",
+      "fwhm_hz": 41700,
+      "temp_k": 300,
+      "material": "GeSbTe",
+      "wavelength_nm": 405
+    }
+  ]
+}
