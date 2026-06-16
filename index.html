@@ -1,467 +1,104 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Voice-of-Brahma-V1 – Universal Ternary Platform</title>
+    <title>Voice-of-Brahma-V1</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0a0e14; color: #e0e6ed; font-family: 'Segoe UI', 'Fira Code', monospace; padding: 2rem; }
-        .container { max-width: 1200px; margin: 0 auto; }
-        header { text-align: center; border-bottom: 2px solid #5ecf82; padding-bottom: 1.5rem; margin-bottom: 2rem; }
-        header h1 { font-size: 2.8rem; font-weight: 300; letter-spacing: 4px; color: #5ecf82; }
-        header p { color: #8899aa; font-size: 1rem; margin-top: 0.5rem; }
-        .tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; border-bottom: 1px solid #2a3340; padding-bottom: 0.5rem; }
-        .tab-btn { background: #141a22; border: 1px solid #2a3340; border-radius: 6px; padding: 0.5rem 1.2rem; color: #8899aa; cursor: pointer; transition: 0.2s; }
-        .tab-btn.active { background: #2a6b40; color: white; border-color: #5ecf82; }
-        .tab-btn:hover { background: #1a2a24; }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .card { background: #141a22; border: 1px solid #2a3340; border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
-        .card h2 { font-size: 1.2rem; font-weight: 400; color: #5ecf82; border-bottom: 1px solid #2a3340; padding-bottom: 0.75rem; margin-bottom: 1rem; }
-        .input-group { display: flex; flex-direction: column; gap: 0.5rem; }
-        .input-group label { font-size: 0.85rem; color: #8899aa; }
-        .input-group input, .input-group textarea { background: #0a0e14; border: 1px solid #2a3340; border-radius: 6px; color: #e0e6ed; padding: 0.6rem 0.8rem; font-family: inherit; font-size: 0.95rem; width: 100%; }
-        .btn { background: #2a6b40; border: none; border-radius: 6px; padding: 0.6rem 1.2rem; color: white; font-family: inherit; font-size: 0.9rem; cursor: pointer; margin-top: 0.5rem; display: inline-block; }
-        .btn:hover { background: #3a8b5a; }
-        .output-box { background: #0a0e14; border: 1px solid #2a3340; border-radius: 6px; padding: 0.8rem; min-height: 2.5rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; margin-top: 0.5rem; color: #b0c4de; white-space: pre-wrap; overflow-y: auto; max-height: 200px; }
-        .flex-row { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; }
-        .badge { display: inline-block; background: #1a2a24; color: #5ecf82; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 20px; letter-spacing: 0.5px; }
-        .footer { text-align: center; margin-top: 3rem; color: #556677; font-size: 0.8rem; border-top: 1px solid #2a3340; padding-top: 1.5rem; }
-        .footer strong { color: #5ecf82; }
-        .error { color: #ff6b6b; display: none; }
-        .success { color: #5ecf82; }
-        table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.8rem; }
-        td, th { padding: 0.3rem 0.5rem; border: 1px solid #2a3340; text-align: left; }
-        th { color: #5ecf82; }
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+        body { background: #0a0e14; color: #e0e6ed; font-family: monospace; padding: 2rem; max-width: 800px; margin: auto; }
+        .card { background: #141a22; border: 1px solid #2a3340; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+        input, button { background: #0a0e14; border: 1px solid #2a3340; color: white; padding: 0.5rem; font-family: monospace; }
+        button { background: #2a6b40; cursor: pointer; margin-right: 0.5rem; }
+        .output { background: #0a0e14; border: 1px solid #2a3340; padding: 0.5rem; margin-top: 0.5rem; white-space: pre-wrap; word-break: break-all; }
+        .back { color: #5ecf82; text-decoration: none; display: inline-block; margin-bottom: 1rem; }
     </style>
 </head>
 <body>
-    <div class="container">
+    <h1 style="color:#5ecf82;">🗣️ Voice-of-Brahma-V1</h1>
+    <p><span style="color:#5ecf82;">Data-driven</span> · No hardcode · All data from <code>data/</code> folder</p>
 
-        <header>
-            <h1>🗣️ Voice-of-Brahma-V1</h1>
-            <p>Universal Ternary Language Platform · <span class="badge">Engine‑Driven</span> <span class="badge">No Hardcode</span></p>
-        </header>
-
-        <!-- TABS -->
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="ascii">📝 ASCII</button>
-            <button class="tab-btn" data-tab="python">🐍 Python</button>
-            <button class="tab-btn" data-tab="c">⚙️ C</button>
-            <button class="tab-btn" data-tab="linux">🐧 Linux</button>
-            <button class="tab-btn" data-tab="html">🌐 HTML</button>
-            <button class="tab-btn" data-tab="energy">⚡ Energy</button>
+    <div class="card">
+        <h2 style="color:#5ecf82;">📝 ASCII ↔ Ternary</h2>
+        <label>Enter text:</label><br>
+        <input type="text" id="input" value="Hello, World!" style="width:100%;">
+        <div style="margin:0.5rem 0;">
+            <button onclick="toTernary()">→ Ternary</button>
+            <button onclick="toBinary()">→ Binary</button>
+            <button onclick="toText()">← Text</button>
+            <button onclick="showStatus()">📊 Status</button>
         </div>
-
-        <!-- ============================================================ -->
-        <!-- TAB: ASCII -->
-        <!-- ============================================================ -->
-        <div id="tab-ascii" class="tab-content active">
-            <div class="card">
-                <h2>📝 ASCII ↔ Ternary & Binary</h2>
-                <div class="input-group">
-                    <label>Enter text (ASCII):</label>
-                    <input type="text" id="textInput" value="Hello, World!">
-                </div>
-                <div class="flex-row">
-                    <button class="btn" id="btnToTernary">→ Ternary</button>
-                    <button class="btn" id="btnToBinary">→ Binary</button>
-                    <button class="btn" id="btnToAscii">← ASCII</button>
-                </div>
-                <div class="output-box" id="asciiOutput">Click a button</div>
-                <div id="asciiError" class="error"></div>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- TAB: Python -->
-        <!-- ============================================================ -->
-        <div id="tab-python" class="tab-content">
-            <div class="card">
-                <h2>🐍 Python ↔ Ternary</h2>
-                <div class="input-group">
-                    <label>Enter Python code:</label>
-                    <input type="text" id="pythonInput" value='print("Hello, World!")'>
-                </div>
-                <div class="flex-row">
-                    <button class="btn" id="btnPythonToTernary">→ Ternary</button>
-                    <button class="btn" id="btnPythonToBinary">→ Binary</button>
-                    <button class="btn" id="btnPythonFromTernary">← Python</button>
-                </div>
-                <div class="output-box" id="pythonOutput">Click a button</div>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- TAB: C -->
-        <!-- ============================================================ -->
-        <div id="tab-c" class="tab-content">
-            <div class="card">
-                <h2>⚙️ C ↔ Ternary</h2>
-                <div class="input-group">
-                    <label>Enter C code:</label>
-                    <input type="text" id="cInput" value='printf("Hello, World!");'>
-                </div>
-                <div class="flex-row">
-                    <button class="btn" id="btnCToTernary">→ Ternary</button>
-                    <button class="btn" id="btnCToBinary">→ Binary</button>
-                    <button class="btn" id="btnCFromTernary">← C</button>
-                </div>
-                <div class="output-box" id="cOutput">Click a button</div>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- TAB: Linux Shell -->
-        <!-- ============================================================ -->
-        <div id="tab-linux" class="tab-content">
-            <div class="card">
-                <h2>🐧 Linux Shell ↔ Ternary</h2>
-                <div class="input-group">
-                    <label>Enter shell command:</label>
-                    <input type="text" id="linuxInput" value='echo "Hello, World!"'>
-                </div>
-                <div class="flex-row">
-                    <button class="btn" id="btnLinuxToTernary">→ Ternary</button>
-                    <button class="btn" id="btnLinuxToBinary">→ Binary</button>
-                    <button class="btn" id="btnLinuxFromTernary">← Shell</button>
-                </div>
-                <div class="output-box" id="linuxOutput">Click a button</div>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- TAB: HTML -->
-        <!-- ============================================================ -->
-        <div id="tab-html" class="tab-content">
-            <div class="card">
-                <h2>🌐 HTML ↔ Ternary</h2>
-                <div class="input-group">
-                    <label>Enter HTML snippet:</label>
-                    <input type="text" id="htmlInput" value='<h1>Hello, World!</h1>'>
-                </div>
-                <div class="flex-row">
-                    <button class="btn" id="btnHtmlToTernary">→ Ternary</button>
-                    <button class="btn" id="btnHtmlToBinary">→ Binary</button>
-                    <button class="btn" id="btnHtmlFromTernary">← HTML</button>
-                </div>
-                <div class="output-box" id="htmlOutput">Click a button</div>
-            </div>
-        </div>
-
-        <!-- ============================================================ -->
-        <!-- TAB: Energy & Scale -->
-        <!-- ============================================================ -->
-        <div id="tab-energy" class="tab-content">
-            <div class="card">
-                <h2>⚡ Energy Consumption & scalePRT</h2>
-                <div class="grid-2">
-                    <div>
-                        <div class="input-group">
-                            <label>FWHM (Hz):</label>
-                            <input type="number" id="fwhm" value="41700">
-                        </div>
-                        <div class="input-group">
-                            <label>Temperature (K):</label>
-                            <input type="number" id="temp" value="300">
-                        </div>
-                        <button class="btn" id="btnComputeScale">⚡ Compute</button>
-                    </div>
-                    <div>
-                        <div class="output-box" id="scaleOutput">scalePRT = 8.14e-36 m</div>
-                        <div id="scaleRatio" class="success"></div>
-                        <div id="energyOutput" style="margin-top:0.5rem; font-size:0.85rem;"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <h2>📋 Energy Consumption Matrix (Pre‑computed)</h2>
-                <div id="energyMatrixOutput" style="font-size:0.8rem;"></div>
-            </div>
-            <div class="card">
-                <h2>📐 Scale Matrix (Pre‑computed)</h2>
-                <div id="scaleMatrixOutput" style="font-size:0.8rem;"></div>
-            </div>
-        </div>
-
-        <div class="footer">
-            <strong>Voice-of-Brahma-V1</strong> · All Rights Reserved ® Seliim Ahmed ·
-            <a href="mailto:amit.khanna.1082@gmail.com" style="color:#5ecf82;">amit.khanna.1082@gmail.com</a>
-        </div>
+        <div class="output" id="output">Click a button</div>
+        <div id="error" style="color:#ff6b6b; display:none;"></div>
+        <div id="status" style="color:#5ecf82; font-size:0.8rem; margin-top:0.5rem;"></div>
     </div>
 
-    <!-- Load the engine -->
     <script src="engine.js"></script>
-
-    <!-- UI logic -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-
-            if (typeof engine === 'undefined') {
-                alert('❌ engine.js not loaded!');
-                return;
-            }
-
-            // ============================================================
-            // TAB SYSTEM
-            // ============================================================
-            const tabs = document.querySelectorAll('.tab-btn');
-            const contents = document.querySelectorAll('.tab-content');
-            tabs.forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const target = this.dataset.tab;
-                    tabs.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    contents.forEach(c => c.classList.remove('active'));
-                    document.getElementById('tab-' + target).classList.add('active');
-                });
-            });
-
-            // ============================================================
-            // HELPER: Update output with ternary and binary
-            // ============================================================
-            function updateOutput(elementId, text, showTernary = true, showBinary = true) {
-                const output = document.getElementById(elementId);
-                let result = '';
-                if (showTernary) {
-                    const ternary = engine.textToTernary(text);
-                    result += 'Ternary (5‑trit):\n' + engine.formatTernary(ternary) + '\n\n';
-                }
-                if (showBinary) {
-                    const binary = engine.pythonToBinary(text); // works for any text
-                    result += 'Binary (8‑bit):\n' + binary;
-                }
-                output.textContent = result || 'No data';
-            }
-
-            // ============================================================
-            // ASCII TAB
-            // ============================================================
-            document.getElementById('btnToTernary').addEventListener('click', function() {
-                const input = document.getElementById('textInput').value;
-                const output = document.getElementById('asciiOutput');
-                const err = document.getElementById('asciiError');
-                err.style.display = 'none';
-                try {
-                    const ternary = engine.textToTernary(input);
-                    output.textContent = 'Ternary (5‑trit):\n' + engine.formatTernary(ternary);
-                } catch (e) {
-                    err.textContent = e.message;
-                    err.style.display = 'block';
-                }
-            });
-
-            document.getElementById('btnToBinary').addEventListener('click', function() {
-                const input = document.getElementById('textInput').value;
-                const output = document.getElementById('asciiOutput');
-                const err = document.getElementById('asciiError');
-                err.style.display = 'none';
-                try {
-                    const binary = engine.pythonToBinary(input);
-                    output.textContent = 'Binary (8‑bit):\n' + binary;
-                } catch (e) {
-                    err.textContent = e.message;
-                    err.style.display = 'block';
-                }
-            });
-
-            document.getElementById('btnToAscii').addEventListener('click', function() {
-                const output = document.getElementById('asciiOutput');
-                const err = document.getElementById('asciiError');
-                err.style.display = 'none';
-                try {
-                    const raw = output.textContent.replace(/\s/g, '');
-                    // Try to detect if it's ternary or binary
-                    let text;
-                    if (/^[012]+$/.test(raw)) {
-                        // ternary
-                        text = engine.ternaryToText(raw);
-                    } else if (/^[01]+$/.test(raw)) {
-                        // binary
-                        text = engine.binaryToPython(raw);
+        // Wait for engine to load
+        function waitForEngine() {
+            return new Promise((resolve) => {
+                const check = () => {
+                    if (engine._loaded) {
+                        resolve();
                     } else {
-                        err.textContent = 'Unknown format – use ternary or binary';
-                        err.style.display = 'block';
-                        return;
+                        setTimeout(check, 100);
                     }
-                    document.getElementById('textInput').value = text;
-                } catch (e) {
-                    err.textContent = e.message;
+                };
+                check();
+            });
+        }
+
+        async function toTernary() {
+            await waitForEngine();
+            const text = document.getElementById('input').value;
+            const result = engine.textToTernary(text);
+            document.getElementById('output').textContent = 'Ternary (5‑trit):\n' + engine.formatTernary(result);
+        }
+
+        async function toBinary() {
+            await waitForEngine();
+            const text = document.getElementById('input').value;
+            const bin = engine.textToBinary(text);
+            document.getElementById('output').textContent = 'Binary (8‑bit):\n' + engine.formatBinary(bin);
+        }
+
+        async function toText() {
+            await waitForEngine();
+            const raw = document.getElementById('output').textContent.replace(/\s/g, '');
+            const err = document.getElementById('error');
+            err.style.display = 'none';
+            try {
+                if (/^[012]+$/.test(raw)) {
+                    document.getElementById('input').value = engine.ternaryToText(raw);
+                } else if (/^[01]+$/.test(raw)) {
+                    document.getElementById('input').value = engine.binaryToText(raw);
+                } else {
+                    err.textContent = 'Unknown format – use ternary (0,1,2) or binary (0,1)';
                     err.style.display = 'block';
                 }
-            });
-
-            // ============================================================
-            // PYTHON TAB
-            // ============================================================
-            document.getElementById('btnPythonToTernary').addEventListener('click', function() {
-                const input = document.getElementById('pythonInput').value;
-                updateOutput('pythonOutput', input, true, false);
-            });
-
-            document.getElementById('btnPythonToBinary').addEventListener('click', function() {
-                const input = document.getElementById('pythonInput').value;
-                updateOutput('pythonOutput', input, false, true);
-            });
-
-            document.getElementById('btnPythonFromTernary').addEventListener('click', function() {
-                const output = document.getElementById('pythonOutput');
-                try {
-                    const raw = output.textContent.replace(/\s/g, '');
-                    const text = engine.ternaryToText(raw);
-                    document.getElementById('pythonInput').value = text;
-                } catch (e) {
-                    alert('Error: ' + e.message);
-                }
-            });
-
-            // ============================================================
-            // C TAB
-            // ============================================================
-            document.getElementById('btnCToTernary').addEventListener('click', function() {
-                const input = document.getElementById('cInput').value;
-                updateOutput('cOutput', input, true, false);
-            });
-
-            document.getElementById('btnCToBinary').addEventListener('click', function() {
-                const input = document.getElementById('cInput').value;
-                updateOutput('cOutput', input, false, true);
-            });
-
-            document.getElementById('btnCFromTernary').addEventListener('click', function() {
-                const output = document.getElementById('cOutput');
-                try {
-                    const raw = output.textContent.replace(/\s/g, '');
-                    const text = engine.ternaryToText(raw);
-                    document.getElementById('cInput').value = text;
-                } catch (e) {
-                    alert('Error: ' + e.message);
-                }
-            });
-
-            // ============================================================
-            // LINUX TAB
-            // ============================================================
-            document.getElementById('btnLinuxToTernary').addEventListener('click', function() {
-                const input = document.getElementById('linuxInput').value;
-                updateOutput('linuxOutput', input, true, false);
-            });
-
-            document.getElementById('btnLinuxToBinary').addEventListener('click', function() {
-                const input = document.getElementById('linuxInput').value;
-                updateOutput('linuxOutput', input, false, true);
-            });
-
-            document.getElementById('btnLinuxFromTernary').addEventListener('click', function() {
-                const output = document.getElementById('linuxOutput');
-                try {
-                    const raw = output.textContent.replace(/\s/g, '');
-                    const text = engine.ternaryToText(raw);
-                    document.getElementById('linuxInput').value = text;
-                } catch (e) {
-                    alert('Error: ' + e.message);
-                }
-            });
-
-            // ============================================================
-            // HTML TAB
-            // ============================================================
-            document.getElementById('btnHtmlToTernary').addEventListener('click', function() {
-                const input = document.getElementById('htmlInput').value;
-                updateOutput('htmlOutput', input, true, false);
-            });
-
-            document.getElementById('btnHtmlToBinary').addEventListener('click', function() {
-                const input = document.getElementById('htmlInput').value;
-                updateOutput('htmlOutput', input, false, true);
-            });
-
-            document.getElementById('btnHtmlFromTernary').addEventListener('click', function() {
-                const output = document.getElementById('htmlOutput');
-                try {
-                    const raw = output.textContent.replace(/\s/g, '');
-                    const text = engine.ternaryToText(raw);
-                    document.getElementById('htmlInput').value = text;
-                } catch (e) {
-                    alert('Error: ' + e.message);
-                }
-            });
-
-            // ============================================================
-            // ENERGY & SCALE TAB
-            // ============================================================
-            document.getElementById('btnComputeScale').addEventListener('click', function() {
-                const f = parseFloat(document.getElementById('fwhm').value) || 41700;
-                const t = parseFloat(document.getElementById('temp').value) || 300;
-                const result = engine.computeScalePRT(f, t);
-                if (!isFinite(result.scalePRT_m) || result.scalePRT_m <= 0) {
-                    document.getElementById('scaleOutput').textContent = 'scalePRT: ∞';
-                    document.getElementById('scaleRatio').textContent = 'Ratio: N/A';
-                    document.getElementById('energyOutput').textContent = '';
-                    return;
-                }
-                document.getElementById('scaleOutput').textContent =
-                    `scalePRT = ${result.scalePRT_m.toExponential(4)} m (${result.scalePRT_nm.toFixed(6)} nm)`;
-                document.getElementById('scaleRatio').textContent =
-                    `Ratio to Landauer: ${result.ratio_to_landauer.toExponential(4)}×`;
-                document.getElementById('energyOutput').innerHTML =
-                    `Energy per bit: ${result.energy_resonance_ev.toExponential(4)} eV<br>` +
-                    `Landauer limit: ${result.energy_landauer_j.toExponential(4)} J<br>` +
-                    `Equivalent bit length: ${result.equivalent_bit_length_nm.toFixed(6)} nm`;
-            });
-
-            // Display pre‑computed matrices
-            function renderMatrix(data, containerId, columns) {
-                const el = document.getElementById(containerId);
-                let html = '<table><tr>';
-                for (const col of columns) html += `<th>${col}</th>`;
-                html += '</tr>';
-                for (const [key, val] of Object.entries(data)) {
-                    html += '<tr>';
-                    for (const col of columns) {
-                        let v = val[col];
-                        if (v === undefined) v = key;
-                        if (typeof v === 'number' && Math.abs(v) < 1e-9) v = v.toExponential(4);
-                        else if (typeof v === 'number' && Math.abs(v) > 1000) v = v.toExponential(4);
-                        html += `<td>${v}</td>`;
-                    }
-                    html += '</tr>';
-                }
-                html += '</table>';
-                el.innerHTML = html;
+            } catch (e) {
+                err.textContent = e.message;
+                err.style.display = 'block';
             }
+        }
 
-            // Energy Matrix
-            const energyData = engine.getEnergyConsumptionMatrix();
-            renderMatrix(energyData, 'energyMatrixOutput', [
-                'fwhm_hz',
-                'resonance_energy_ev',
-                'ratio_to_landauer',
-                'energy_per_bit_ev'
-            ]);
+        async function showStatus() {
+            await waitForEngine();
+            const energy = engine.getEnergyMatrix();
+            const scale = engine.getScaleMatrix();
+            const status = document.getElementById('status');
+            status.innerHTML = `Energy matrix: ${Object.keys(energy).length} entries<br>` +
+                              `Scale matrix: ${Object.keys(scale).length} entries<br>` +
+                              `ASCII table: ${Object.keys(engine.asciiTable).length} characters<br>` +
+                              `Engine: loaded ✅`;
+        }
 
-            // Scale Matrix
-            const scaleData = engine.getScaleMatrix();
-            renderMatrix(scaleData, 'scaleMatrixOutput', [
-                'fwhm_hz',
-                'scalePRT_m',
-                'ratio_to_landauer',
-                'equivalent_bit_length_nm'
-            ]);
-
-            // Auto-run initial conversions for each tab
-            document.getElementById('btnToTernary').click();
-            document.getElementById('btnPythonToTernary').click();
-            document.getElementById('btnCToTernary').click();
-            document.getElementById('btnLinuxToTernary').click();
-            document.getElementById('btnHtmlToTernary').click();
-            document.getElementById('btnComputeScale').click();
-
-            console.log('✅ Voice-of-Brahma-V1 UI ready – all logic in engine.js');
-        });
+        // Auto-run on load
+        window.onload = function() {
+            waitForEngine().then(() => {
+                document.getElementById('output').textContent = 'Engine loaded. Click a button.';
+                showStatus();
+            });
+        };
     </script>
 </body>
 </html>
