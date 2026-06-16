@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voice-of-Brahma-V1 – Universal Ternary Platform</title>
     <style>
-        /* ================================================================
+        /* ============================================================
            RESET & BASE
-           ================================================================ */
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +15,7 @@
         }
 
         body {
-            background: #0a0e14;
+            background: #000000;
             color: #e0e6ed;
             font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
             padding: 2rem;
@@ -28,37 +28,44 @@
             margin: 0 auto;
         }
 
-        /* ================================================================
-           HEADER
-           ================================================================ */
+        /* ============================================================
+           HEADER with symbols
+           ============================================================ */
         header {
             text-align: center;
-            padding: 3rem 0 2rem 0;
-            border-bottom: 1px solid rgba(94, 207, 130, 0.2);
-            margin-bottom: 2.5rem;
+            padding: 2rem 0 1.5rem 0;
+            border-bottom: 1px solid rgba(255, 0, 0, 0.25);
+            margin-bottom: 2rem;
+        }
+
+        header .symbols {
+            font-size: 2.2rem;
+            letter-spacing: 0.8rem;
+            display: block;
+            margin-bottom: 0.3rem;
+            color: #ff3333;
         }
 
         header h1 {
             font-size: 3.2rem;
             font-weight: 300;
             letter-spacing: 6px;
-            color: #5ecf82;
-            text-shadow: 0 0 40px rgba(94, 207, 130, 0.1);
+            color: #ffffff;
         }
 
         header h1 span {
+            color: #ff3333;
             font-weight: 700;
-            color: #ffffff;
         }
 
         header p {
             color: #8899aa;
             font-size: 1.1rem;
-            margin-top: 0.5rem;
+            margin-top: 0.3rem;
             letter-spacing: 1px;
         }
 
-        header .badge-group {
+        .badge-group {
             margin-top: 1rem;
             display: flex;
             justify-content: center;
@@ -68,13 +75,13 @@
 
         .badge {
             display: inline-block;
-            background: rgba(94, 207, 130, 0.1);
-            color: #5ecf82;
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff3333;
             font-size: 0.7rem;
             padding: 0.3rem 0.9rem;
             border-radius: 20px;
             letter-spacing: 0.5px;
-            border: 1px solid rgba(94, 207, 130, 0.15);
+            border: 1px solid rgba(255, 0, 0, 0.2);
         }
 
         .badge.gold {
@@ -83,18 +90,18 @@
             border-color: rgba(255, 215, 0, 0.2);
         }
 
-        /* ================================================================
-           NAVIGATION BAR
-           ================================================================ */
+        /* ============================================================
+           NAVIGATION BAR (Red accent)
+           ============================================================ */
         .nav-bar {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
             padding: 0.5rem;
-            background: rgba(20, 26, 34, 0.6);
+            background: rgba(20, 20, 20, 0.8);
             border-radius: 12px;
-            border: 1px solid rgba(42, 51, 64, 0.5);
+            border: 1px solid rgba(255, 0, 0, 0.2);
             justify-content: center;
         }
 
@@ -109,28 +116,28 @@
         }
 
         .nav-bar a:hover {
-            background: rgba(94, 207, 130, 0.1);
-            color: #5ecf82;
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff4444;
         }
 
         .nav-bar a.active {
-            background: #2a6b40;
+            background: #cc0000;
             color: white;
         }
 
-        /* ================================================================
+        /* ============================================================
            STATUS DASHBOARD
-           ================================================================ */
+           ============================================================ */
         .status-dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 1rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         .status-card {
-            background: #141a22;
-            border: 1px solid #2a3340;
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
             border-radius: 10px;
             padding: 1rem 1.2rem;
             text-align: center;
@@ -138,13 +145,13 @@
         }
 
         .status-card:hover {
-            border-color: #5ecf82;
+            border-color: #ff3333;
         }
 
         .status-card .number {
             font-size: 1.8rem;
             font-weight: 600;
-            color: #5ecf82;
+            color: #ff3333;
             display: block;
         }
 
@@ -172,14 +179,14 @@
             background: #ff6b6b;
         }
 
-        /* ================================================================
+        /* ============================================================
            MAIN GRID
-           ================================================================ */
+           ============================================================ */
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.8rem;
-            margin-bottom: 2.5rem;
+            margin-bottom: 2rem;
         }
 
         @media (max-width: 900px) {
@@ -189,22 +196,22 @@
         }
 
         .card {
-            background: #141a22;
-            border: 1px solid #2a3340;
+            background: #0a0a0a;
+            border: 1px solid #2a2a2a;
             border-radius: 12px;
             padding: 1.8rem;
             transition: border-color 0.2s;
         }
 
         .card:hover {
-            border-color: #5ecf82;
+            border-color: #ff3333;
         }
 
         .card h2 {
             font-size: 1.2rem;
             font-weight: 400;
-            color: #5ecf82;
-            border-bottom: 1px solid #2a3340;
+            color: #ff3333;
+            border-bottom: 1px solid #2a2a2a;
             padding-bottom: 0.75rem;
             margin-bottom: 1.2rem;
             display: flex;
@@ -216,9 +223,9 @@
             font-size: 1.4rem;
         }
 
-        /* ================================================================
-           FORM ELEMENTS
-           ================================================================ */
+        /* ============================================================
+           FORM ELEMENTS (Red accent)
+           ============================================================ */
         .input-group {
             display: flex;
             flex-direction: column;
@@ -235,8 +242,8 @@
 
         .input-group input,
         .input-group textarea {
-            background: #0a0e14;
-            border: 1px solid #2a3340;
+            background: #000000;
+            border: 1px solid #2a2a2a;
             border-radius: 8px;
             color: #e0e6ed;
             padding: 0.7rem 1rem;
@@ -249,8 +256,8 @@
         .input-group input:focus,
         .input-group textarea:focus {
             outline: none;
-            border-color: #5ecf82;
-            box-shadow: 0 0 0 3px rgba(94, 207, 130, 0.1);
+            border-color: #ff3333;
+            box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
         }
 
         .btn-group {
@@ -261,7 +268,7 @@
         }
 
         .btn {
-            background: #2a6b40;
+            background: #cc0000;
             border: none;
             border-radius: 8px;
             padding: 0.6rem 1.4rem;
@@ -275,19 +282,21 @@
         }
 
         .btn:hover {
-            background: #3a8b5a;
+            background: #ff1a1a;
             transform: translateY(-1px);
-            box-shadow: 0 4px 15px rgba(42, 107, 64, 0.3);
+            box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4);
         }
 
         .btn-secondary {
-            background: #1a2a24;
-            border: 1px solid #2a6b40;
+            background: #2a2a2a;
+            border: 1px solid #cc0000;
+            color: #e0e6ed;
         }
 
         .btn-secondary:hover {
-            background: #2a3a34;
+            background: #3a3a3a;
             box-shadow: none;
+            transform: none;
         }
 
         .btn-gold {
@@ -299,12 +308,12 @@
             background: #aa9a3a;
         }
 
-        /* ================================================================
+        /* ============================================================
            OUTPUT BOX
-           ================================================================ */
+           ============================================================ */
         .output-box {
-            background: #0a0e14;
-            border: 1px solid #2a3340;
+            background: #000000;
+            border: 1px solid #2a2a2a;
             border-radius: 8px;
             padding: 0.8rem 1rem;
             min-height: 3rem;
@@ -331,9 +340,9 @@
             display: none;
         }
 
-        /* ================================================================
+        /* ============================================================
            MATRIX TABLE
-           ================================================================ */
+           ============================================================ */
         .matrix-table {
             width: 100%;
             border-collapse: collapse;
@@ -342,33 +351,33 @@
         }
 
         .matrix-table th {
-            background: #0a0e14;
-            color: #5ecf82;
+            background: #000000;
+            color: #ff3333;
             text-align: left;
             padding: 0.4rem 0.6rem;
-            border-bottom: 2px solid #2a3340;
+            border-bottom: 2px solid #2a2a2a;
             font-weight: 500;
             letter-spacing: 0.3px;
         }
 
         .matrix-table td {
             padding: 0.3rem 0.6rem;
-            border-bottom: 1px solid #1a2a24;
+            border-bottom: 1px solid #1a1a1a;
             color: #b0c4de;
         }
 
         .matrix-table tr:hover td {
-            background: rgba(94, 207, 130, 0.03);
+            background: rgba(255, 0, 0, 0.03);
         }
 
         .matrix-table .highlight {
-            color: #5ecf82;
+            color: #ff3333;
             font-weight: 500;
         }
 
-        /* ================================================================
+        /* ============================================================
            RESPONSIVE
-           ================================================================ */
+           ============================================================ */
         @media (max-width: 640px) {
             body {
                 padding: 1rem;
@@ -389,38 +398,38 @@
             }
         }
 
-        /* ================================================================
+        /* ============================================================
            SCROLLBAR
-           ================================================================ */
+           ============================================================ */
         ::-webkit-scrollbar {
             width: 4px;
         }
         ::-webkit-scrollbar-track {
-            background: #0a0e14;
+            background: #0a0a0a;
         }
         ::-webkit-scrollbar-thumb {
-            background: #2a6b40;
+            background: #cc0000;
             border-radius: 4px;
         }
 
-        /* ================================================================
+        /* ============================================================
            FOOTER
-           ================================================================ */
+           ============================================================ */
         .footer {
             text-align: center;
-            margin-top: 3rem;
+            margin-top: 2.5rem;
             padding-top: 1.5rem;
-            border-top: 1px solid #2a3340;
+            border-top: 1px solid #2a2a2a;
             color: #556677;
             font-size: 0.8rem;
         }
 
         .footer strong {
-            color: #5ecf82;
+            color: #ff3333;
         }
 
         .footer a {
-            color: #5ecf82;
+            color: #ff3333;
             text-decoration: none;
         }
 
@@ -433,16 +442,17 @@
     <div class="container">
 
         <!-- ============================================================
-        HEADER
+        HEADER with symbols
         ============================================================ -->
         <header>
-            <h1>🗣️ Voice-of-<span>Brahma</span>-V1</h1>
+            <span class="symbols">💽 🔔 ♻️ ☯️ ♾️</span>
+            <h1>Voice-of-<span>Brahma</span>-V1</h1>
             <p>Universal Ternary Language Platform · Data‑Driven · No Hardcode</p>
             <div class="badge-group">
                 <span class="badge">5‑trit ASCII</span>
                 <span class="badge">scalePRT</span>
                 <span class="badge gold">Engine v1.0</span>
-                <span class="badge">All data from <code style="color:#5ecf82;">data/</code></span>
+                <span class="badge">All data from <code style="color:#ff3333;">data/</code></span>
             </div>
         </header>
 
@@ -524,7 +534,7 @@
                     </table>
                 </div>
                 <div style="margin-top: 0.8rem; text-align: right; font-size: 0.75rem; color: #8899aa;">
-                    <a href="energy.html" style="color:#5ecf82; text-decoration:none;">View full matrix →</a>
+                    <a href="energy.html" style="color:#ff3333; text-decoration:none;">View full matrix →</a>
                 </div>
             </div>
 
