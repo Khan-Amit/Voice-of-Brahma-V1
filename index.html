@@ -5,181 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Voice-of-Brahma-V1 – Universal Ternary Platform</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            background: #0a0e14;
-            color: #e0e6ed;
-            font-family: 'Segoe UI', 'Fira Code', monospace;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        header {
-            text-align: center;
-            border-bottom: 2px solid #5ecf82;
-            padding-bottom: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        header h1 {
-            font-size: 2.8rem;
-            font-weight: 300;
-            letter-spacing: 4px;
-            color: #5ecf82;
-        }
-        header p {
-            color: #8899aa;
-            font-size: 1rem;
-            margin-top: 0.5rem;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 1.5rem;
-        }
-        .card {
-            background: #141a22;
-            border: 1px solid #2a3340;
-            border-radius: 12px;
-            padding: 1.5rem;
-            transition: border-color 0.2s;
-        }
-        .card:hover {
-            border-color: #5ecf82;
-        }
-        .card h2 {
-            font-size: 1.2rem;
-            font-weight: 400;
-            color: #5ecf82;
-            border-bottom: 1px solid #2a3340;
-            padding-bottom: 0.75rem;
-            margin-bottom: 1rem;
-        }
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .input-group label {
-            font-size: 0.85rem;
-            color: #8899aa;
-        }
-        .input-group input,
-        .input-group textarea {
-            background: #0a0e14;
-            border: 1px solid #2a3340;
-            border-radius: 6px;
-            color: #e0e6ed;
-            padding: 0.6rem 0.8rem;
-            font-family: inherit;
-            font-size: 0.95rem;
-            resize: vertical;
-        }
-        .input-group input:focus,
-        .input-group textarea:focus {
-            outline: none;
-            border-color: #5ecf82;
-        }
-        .btn {
-            background: #2a6b40;
-            border: none;
-            border-radius: 6px;
-            padding: 0.6rem 1.2rem;
-            color: white;
-            font-family: inherit;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background 0.2s;
-            margin-top: 0.5rem;
-            display: inline-block;
-        }
-        .btn:hover {
-            background: #3a8b5a;
-        }
-        .btn-secondary {
-            background: #1a2a24;
-            border: 1px solid #2a6b40;
-        }
-        .btn-secondary:hover {
-            background: #2a3a34;
-        }
-        .output-box {
-            background: #0a0e14;
-            border: 1px solid #2a3340;
-            border-radius: 6px;
-            padding: 0.8rem;
-            min-height: 2.5rem;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.85rem;
-            word-break: break-all;
-            margin-top: 0.5rem;
-            color: #b0c4de;
-            white-space: pre-wrap;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .badge {
-            display: inline-block;
-            background: #1a2a24;
-            color: #5ecf82;
-            font-size: 0.7rem;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            letter-spacing: 0.5px;
-        }
-        .flex-row {
-            display: flex;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .registers {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 0.3rem;
-            margin: 0.5rem 0;
-            font-size: 0.8rem;
-        }
-        .registers span {
-            background: #0a0e14;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            border: 1px solid #1a2a24;
-        }
-        .registers .reg-name {
-            color: #8899aa;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 3rem;
-            color: #556677;
-            font-size: 0.8rem;
-            border-top: 1px solid #2a3340;
-            padding-top: 1.5rem;
-        }
-        .footer strong {
-            color: #5ecf82;
-        }
-        .error {
-            color: #ff6b6b;
-            font-size: 0.85rem;
-        }
-        @media (max-width: 640px) {
-            body {
-                padding: 1rem;
-            }
-            header h1 {
-                font-size: 2rem;
-            }
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0e14; color: #e0e6ed; font-family: 'Segoe UI', 'Fira Code', monospace; padding: 2rem; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { text-align: center; border-bottom: 2px solid #5ecf82; padding-bottom: 1.5rem; margin-bottom: 2rem; }
+        header h1 { font-size: 2.8rem; font-weight: 300; letter-spacing: 4px; color: #5ecf82; }
+        header p { color: #8899aa; font-size: 1rem; margin-top: 0.5rem; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 1.5rem; }
+        .card { background: #141a22; border: 1px solid #2a3340; border-radius: 12px; padding: 1.5rem; transition: border-color 0.2s; }
+        .card:hover { border-color: #5ecf82; }
+        .card h2 { font-size: 1.2rem; font-weight: 400; color: #5ecf82; border-bottom: 1px solid #2a3340; padding-bottom: 0.75rem; margin-bottom: 1rem; }
+        .input-group { display: flex; flex-direction: column; gap: 0.5rem; }
+        .input-group label { font-size: 0.85rem; color: #8899aa; }
+        .input-group input, .input-group textarea { background: #0a0e14; border: 1px solid #2a3340; border-radius: 6px; color: #e0e6ed; padding: 0.6rem 0.8rem; font-family: inherit; font-size: 0.95rem; resize: vertical; }
+        .input-group input:focus, .input-group textarea:focus { outline: none; border-color: #5ecf82; }
+        .btn { background: #2a6b40; border: none; border-radius: 6px; padding: 0.6rem 1.2rem; color: white; font-family: inherit; font-size: 0.9rem; cursor: pointer; transition: background 0.2s; margin-top: 0.5rem; display: inline-block; }
+        .btn:hover { background: #3a8b5a; }
+        .btn-secondary { background: #1a2a24; border: 1px solid #2a6b40; }
+        .btn-secondary:hover { background: #2a3a34; }
+        .output-box { background: #0a0e14; border: 1px solid #2a3340; border-radius: 6px; padding: 0.8rem; min-height: 2.5rem; font-family: 'Fira Code', monospace; font-size: 0.85rem; word-break: break-all; margin-top: 0.5rem; color: #b0c4de; white-space: pre-wrap; max-height: 150px; overflow-y: auto; }
+        .badge { display: inline-block; background: #1a2a24; color: #5ecf82; font-size: 0.7rem; padding: 0.2rem 0.6rem; border-radius: 20px; letter-spacing: 0.5px; }
+        .flex-row { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; }
+        .registers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem; margin: 0.5rem 0; font-size: 0.8rem; }
+        .registers span { background: #0a0e14; padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid #1a2a24; }
+        .registers .reg-name { color: #8899aa; }
+        .footer { text-align: center; margin-top: 3rem; color: #556677; font-size: 0.8rem; border-top: 1px solid #2a3340; padding-top: 1.5rem; }
+        .footer strong { color: #5ecf82; }
+        .error { color: #ff6b6b; font-size: 0.85rem; }
+        @media (max-width: 640px) { body { padding: 1rem; } header h1 { font-size: 2rem; } .grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -199,8 +52,8 @@
                     <input type="text" id="textInput" value="Hello, World!" placeholder="Type something..." />
                 </div>
                 <div class="flex-row">
-                    <button class="btn" onclick="toTernary()">→ Ternary</button>
-                    <button class="btn btn-secondary" onclick="toAscii()">← ASCII</button>
+                    <button class="btn" id="btnToTernary">→ Ternary</button>
+                    <button class="btn btn-secondary" id="btnToAscii">← ASCII</button>
                 </div>
                 <div class="output-box" id="ternaryOutput">Click "→ Ternary" to translate</div>
                 <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;">
@@ -216,7 +69,7 @@
                     <label for="rotorInput">Enter ternary string (0,1,2 only):</label>
                     <input type="text" id="rotorInput" value="021020211202112021210214301001" placeholder="e.g. 02102..." />
                 </div>
-                <button class="btn" onclick="applyRotors()">🔀 Apply Rotors</button>
+                <button class="btn" id="btnApplyRotors">🔀 Apply Rotors</button>
                 <div class="output-box" id="rotorOutput">(encrypted ternary will appear here)</div>
                 <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;">
                     Rotors: I, II, III · Reflector: -1 ↔ +1
@@ -228,7 +81,7 @@
             <div class="card">
                 <h2>⚙️ TVM – Add Program</h2>
                 <p style="font-size:0.9rem; color:#8899aa;">Program: LOAD R0, 5 | LOAD R1, 3 | ADD | HALT</p>
-                <button class="btn" onclick="runTVM()">▶ Run TVM</button>
+                <button class="btn" id="btnRunTvm">▶ Run TVM</button>
                 <div style="margin-top:0.8rem;">
                     <div><strong>Registers after execution:</strong></div>
                     <div class="registers" id="regDisplay">
@@ -254,7 +107,7 @@
                     <label for="temp">Temperature (K):</label>
                     <input type="number" id="temp" value="300" step="1" />
                 </div>
-                <button class="btn" onclick="computeScale()">⚡ Compute scalePRT</button>
+                <button class="btn" id="btnComputeScale">⚡ Compute scalePRT</button>
                 <div class="output-box" id="scaleOutput">scalePRT = 8.14e-36 m</div>
                 <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;" id="scaleRatio">
                     Ratio to Landauer limit: 1.04e8×
@@ -334,218 +187,174 @@
         // ============================================================
         // 2. ENIGMA ROTOR
         // ============================================================
-        const ROTORS = [
-            [0, 1, 2],
-            [1, 2, 0],
-            [2, 0, 1]
-        ];
-        const REFLECTOR = [2, 1, 0];
+        const ROTORS = [[0,1,2],[1,2,0],[2,0,1]];
+        const REFLECTOR = [2,1,0];
 
-        function applyRotor(symbol, rotor, inverse) {
-            if (inverse) {
-                return rotor.indexOf(symbol);
-            } else {
-                return rotor[symbol];
-            }
+        function applyRotor(sym, rotor, inv) {
+            return inv ? rotor.indexOf(sym) : rotor[sym];
         }
 
-        function enigmaTransform(inputTrits) {
-            const cleaned = inputTrits.replace(/[^012]/g, '');
+        function enigmaTransform(input) {
+            const cleaned = input.replace(/[^012]/g, '');
             if (cleaned.length === 0) return '';
-
-            let positions = [0, 0, 0];
-            let output = '';
-
+            let pos = [0,0,0];
+            let out = '';
             for (let ch of cleaned) {
-                let val = parseInt(ch, 10);
-                val = (val + positions[0]) % 3;
-                val = applyRotor(val, ROTORS[0], false);
-                val = applyRotor(val, ROTORS[1], false);
-                val = applyRotor(val, ROTORS[2], false);
-                val = REFLECTOR[val];
-                val = applyRotor(val, ROTORS[2], true);
-                val = applyRotor(val, ROTORS[1], true);
-                val = applyRotor(val, ROTORS[0], true);
-                val = (val - positions[0] + 3) % 3;
-                output += String(val);
-                positions[0] = (positions[0] + 1) % 3;
-                if (positions[0] === 0) {
-                    positions[1] = (positions[1] + 1) % 3;
-                    if (positions[1] === 0) {
-                        positions[2] = (positions[2] + 1) % 3;
-                    }
+                let v = parseInt(ch, 10);
+                v = (v + pos[0]) % 3;
+                v = applyRotor(v, ROTORS[0], false);
+                v = applyRotor(v, ROTORS[1], false);
+                v = applyRotor(v, ROTORS[2], false);
+                v = REFLECTOR[v];
+                v = applyRotor(v, ROTORS[2], true);
+                v = applyRotor(v, ROTORS[1], true);
+                v = applyRotor(v, ROTORS[0], true);
+                v = (v - pos[0] + 3) % 3;
+                out += String(v);
+                pos[0] = (pos[0] + 1) % 3;
+                if (pos[0] === 0) {
+                    pos[1] = (pos[1] + 1) % 3;
+                    if (pos[1] === 0) pos[2] = (pos[2] + 1) % 3;
                 }
             }
-            return output;
+            return out;
         }
 
         // ============================================================
         // 3. TVM
         // ============================================================
-        function tvmTernaryToInt(trits) {
-            let val = 0;
-            for (let ch of trits) {
-                val = val * 3 + parseInt(ch, 10);
-            }
-            return val;
-        }
-
-        function tvmIntToTernary(n, len) {
-            len = len || 5;
-            if (n === 0) return '0'.repeat(len);
-            let digits = '';
-            while (n > 0) {
-                digits = (n % 3) + digits;
-                n = Math.floor(n / 3);
-            }
-            return digits.padStart(len, '0');
+        function tvmToInt(t) { let v=0; for(let ch of t) v = v*3 + parseInt(ch,10); return v; }
+        function tvmToTernary(n, len=5) {
+            if (n===0) return '0'.repeat(len);
+            let d=''; while(n>0){ d=(n%3)+d; n=Math.floor(n/3); } return d.padStart(len,'0');
         }
 
         function runTVM() {
-            const regs = {
-                R0: '00000',
-                R1: '00000',
-                R2: '00000',
-                R3: '00000',
-                R4: '00000',
-                R5: '00000'
-            };
-            regs.R0 = tvmIntToTernary(5, 5);
-            regs.R1 = tvmIntToTernary(3, 5);
-            const a = tvmTernaryToInt(regs.R0);
-            const b = tvmTernaryToInt(regs.R1);
+            const r = {R0:'00000',R1:'00000',R2:'00000',R3:'00000',R4:'00000',R5:'00000'};
+            r.R0 = tvmToTernary(5);
+            r.R1 = tvmToTernary(3);
+            const a = tvmToInt(r.R0), b = tvmToInt(r.R1);
             const sum = a + b;
-            regs.R0 = tvmIntToTernary(sum, 5);
-            regs.R5 = (sum >= 243) ? '00001' : '00000';
-            // Update display
-            document.getElementById('r0').textContent = regs.R0;
-            document.getElementById('r1').textContent = regs.R1;
-            document.getElementById('r2').textContent = regs.R2;
-            document.getElementById('r3').textContent = regs.R3;
-            document.getElementById('r4').textContent = regs.R4;
-            document.getElementById('r5').textContent = regs.R5;
-            const result = sum;
-            const resultTernary = regs.R0;
-            document.getElementById('tvmOutput').textContent =
-                `Result (R0) = ${result} (${resultTernary}₃) ✅`;
+            r.R0 = tvmToTernary(sum);
+            r.R5 = sum >= 243 ? '00001' : '00000';
+            document.getElementById('r0').textContent = r.R0;
+            document.getElementById('r1').textContent = r.R1;
+            document.getElementById('r2').textContent = r.R2;
+            document.getElementById('r3').textContent = r.R3;
+            document.getElementById('r4').textContent = r.R4;
+            document.getElementById('r5').textContent = r.R5;
+            document.getElementById('tvmOutput').textContent = `Result (R0) = ${sum} (${r.R0}₃) ✅`;
         }
 
         // ============================================================
         // 4. scalePRT
         // ============================================================
-        function computeScalePRT(fwhmHz, tempK) {
-            const kB = 1.380649e-23;
-            const h = 6.62607015e-34;
-            const lambda = 780e-9;
-            const pi = Math.PI;
-            const log2_3 = Math.log2(3);
-
-            if (fwhmHz <= 0) {
-                return { scalePRT: Infinity, ratio: Infinity };
-            }
-
-            const E_landauer = kB * tempK * Math.log(2);
-            const E_resonance = h * fwhmHz;
-            const ratio = E_landauer / E_resonance;
-            const scalePRT = (lambda / (2 * pi)) * ratio / log2_3;
-
-            return { scalePRT, ratio };
+        function computeScale(f, t) {
+            const kB = 1.380649e-23, h = 6.62607015e-34, lambda = 780e-9, log2_3 = Math.log2(3);
+            if (f <= 0) return { scalePRT: Infinity, ratio: Infinity };
+            const E_land = kB * t * Math.log(2);
+            const E_res = h * f;
+            const ratio = E_land / E_res;
+            return { scalePRT: (lambda / (2*Math.PI)) * ratio / log2_3, ratio };
         }
 
         // ============================================================
-        // UI FUNCTIONS
+        // UI FUNCTIONS (using addEventListener for reliability)
         // ============================================================
 
+        function bindButton(id, handler) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.addEventListener('click', handler);
+                console.log('✅ Bound:', id);
+            } else {
+                console.error('❌ Button not found:', id);
+            }
+        }
+
+        // Ternary ASCII
         function toTernary() {
             const input = document.getElementById('textInput');
             const output = document.getElementById('ternaryOutput');
-            const errorDiv = document.getElementById('ternaryError');
-            errorDiv.style.display = 'none';
+            const err = document.getElementById('ternaryError');
+            err.style.display = 'none';
             try {
-                const text = input.value;
-                const result = textToTernary(text);
+                const result = textToTernary(input.value);
                 output.textContent = formatTernary(result);
-            } catch (e) {
-                errorDiv.textContent = 'Error: ' + e.message;
-                errorDiv.style.display = 'block';
+                console.log('✅ toTernary OK');
+            } catch(e) {
+                err.textContent = 'Error: ' + e.message;
+                err.style.display = 'block';
             }
         }
 
         function toAscii() {
             const output = document.getElementById('ternaryOutput');
-            const errorDiv = document.getElementById('ternaryError');
-            errorDiv.style.display = 'none';
+            const err = document.getElementById('ternaryError');
+            err.style.display = 'none';
             try {
                 const raw = output.textContent.replace(/\s/g, '');
-                if (raw.length === 0) {
-                    errorDiv.textContent = 'No ternary data to decode';
-                    errorDiv.style.display = 'block';
-                    return;
-                }
+                if (!raw) { err.textContent = 'No ternary data'; err.style.display='block'; return; }
                 const result = ternaryToText(raw);
                 document.getElementById('textInput').value = result;
-            } catch (e) {
-                errorDiv.textContent = 'Error: ' + e.message;
-                errorDiv.style.display = 'block';
+                console.log('✅ toAscii OK');
+            } catch(e) {
+                err.textContent = 'Error: ' + e.message;
+                err.style.display = 'block';
             }
         }
 
+        // Enigma
         function applyRotors() {
             const input = document.getElementById('rotorInput');
             const output = document.getElementById('rotorOutput');
-            const errorDiv = document.getElementById('rotorError');
-            errorDiv.style.display = 'none';
+            const err = document.getElementById('rotorError');
+            err.style.display = 'none';
             try {
-                const value = input.value;
-                if (!value) {
-                    errorDiv.textContent = 'Please enter ternary string (0,1,2)';
-                    errorDiv.style.display = 'block';
-                    return;
-                }
-                const result = enigmaTransform(value);
-                if (result.length === 0) {
-                    errorDiv.textContent = 'No valid ternary digits (0,1,2) found';
-                    errorDiv.style.display = 'block';
-                    output.textContent = '(empty)';
-                    return;
-                }
+                const val = input.value;
+                if (!val) { err.textContent = 'Enter ternary string'; err.style.display='block'; return; }
+                const result = enigmaTransform(val);
+                if (!result) { err.textContent = 'No valid digits'; err.style.display='block'; output.textContent='(empty)'; return; }
                 output.textContent = formatTernary(result);
-            } catch (e) {
-                errorDiv.textContent = 'Error: ' + e.message;
-                errorDiv.style.display = 'block';
+                console.log('✅ applyRotors OK');
+            } catch(e) {
+                err.textContent = 'Error: ' + e.message;
+                err.style.display = 'block';
             }
         }
 
-        function computeScale() {
-            const fwhmInput = document.getElementById('fwhm');
-            const tempInput = document.getElementById('temp');
-            const scaleOutput = document.getElementById('scaleOutput');
-            const scaleRatio = document.getElementById('scaleRatio');
-
-            const fwhm = parseFloat(fwhmInput.value) || 41700;
-            const temp = parseFloat(tempInput.value) || 300;
-
-            const result = computeScalePRT(fwhm, temp);
-
+        // scalePRT
+        function computeScaleUI() {
+            const f = parseFloat(document.getElementById('fwhm').value) || 41700;
+            const t = parseFloat(document.getElementById('temp').value) || 300;
+            const result = computeScale(f, t);
             if (!isFinite(result.scalePRT) || result.scalePRT <= 0) {
-                scaleOutput.textContent = 'scalePRT: ∞ (no resonance)';
-                scaleRatio.textContent = 'Ratio: N/A';
+                document.getElementById('scaleOutput').textContent = 'scalePRT: ∞';
+                document.getElementById('scaleRatio').textContent = 'Ratio: N/A';
                 return;
             }
-
-            scaleOutput.textContent = `scalePRT = ${result.scalePRT.toExponential(4)} m`;
-            scaleRatio.textContent = `Ratio to Landauer limit: ${result.ratio.toExponential(4)}×`;
+            document.getElementById('scaleOutput').textContent = `scalePRT = ${result.scalePRT.toExponential(4)} m`;
+            document.getElementById('scaleRatio').textContent = `Ratio to Landauer limit: ${result.ratio.toExponential(4)}×`;
+            console.log('✅ computeScale OK');
         }
 
         // ============================================================
-        // INITIAL LOAD
+        // BIND ALL BUTTONS
         // ============================================================
         window.onload = function() {
-            // Run initial translations to populate outputs
+            console.log('🚀 Voice-of-Brahma-V1 loaded');
+
+            bindButton('btnToTernary', toTernary);
+            bindButton('btnToAscii', toAscii);
+            bindButton('btnApplyRotors', applyRotors);
+            bindButton('btnRunTvm', runTVM);
+            bindButton('btnComputeScale', computeScaleUI);
+
+            // Initial run
             toTernary();
             applyRotors();
             runTVM();
-            computeScale();
+            computeScaleUI();
         };
     </script>
 </body>
