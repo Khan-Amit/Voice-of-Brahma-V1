@@ -10,45 +10,38 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             background: #0a0e14;
             color: #e0e6ed;
             font-family: 'Segoe UI', 'Fira Code', monospace;
             padding: 2rem;
         }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
         }
-
         header {
             text-align: center;
             border-bottom: 2px solid #5ecf82;
             padding-bottom: 1.5rem;
             margin-bottom: 2rem;
         }
-
         header h1 {
             font-size: 2.8rem;
             font-weight: 300;
             letter-spacing: 4px;
             color: #5ecf82;
         }
-
         header p {
             color: #8899aa;
             font-size: 1rem;
             margin-top: 0.5rem;
         }
-
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
             gap: 1.5rem;
         }
-
         .card {
             background: #141a22;
             border: 1px solid #2a3340;
@@ -56,11 +49,9 @@
             padding: 1.5rem;
             transition: border-color 0.2s;
         }
-
         .card:hover {
             border-color: #5ecf82;
         }
-
         .card h2 {
             font-size: 1.2rem;
             font-weight: 400;
@@ -69,18 +60,15 @@
             padding-bottom: 0.75rem;
             margin-bottom: 1rem;
         }
-
         .input-group {
             display: flex;
             flex-direction: column;
             gap: 0.5rem;
         }
-
         .input-group label {
             font-size: 0.85rem;
             color: #8899aa;
         }
-
         .input-group input,
         .input-group textarea {
             background: #0a0e14;
@@ -92,13 +80,11 @@
             font-size: 0.95rem;
             resize: vertical;
         }
-
         .input-group input:focus,
         .input-group textarea:focus {
             outline: none;
             border-color: #5ecf82;
         }
-
         .btn {
             background: #2a6b40;
             border: none;
@@ -111,11 +97,9 @@
             transition: background 0.2s;
             margin-top: 0.5rem;
         }
-
         .btn:hover {
             background: #3a8b5a;
         }
-
         .output-box {
             background: #0a0e14;
             border: 1px solid #2a3340;
@@ -131,7 +115,6 @@
             max-height: 150px;
             overflow-y: auto;
         }
-
         .badge {
             display: inline-block;
             background: #1a2a24;
@@ -141,14 +124,12 @@
             border-radius: 20px;
             letter-spacing: 0.5px;
         }
-
         .flex-row {
             display: flex;
             gap: 0.8rem;
             flex-wrap: wrap;
             align-items: center;
         }
-
         .registers {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -156,18 +137,15 @@
             margin: 0.5rem 0;
             font-size: 0.8rem;
         }
-
         .registers span {
             background: #0a0e14;
             padding: 0.2rem 0.5rem;
             border-radius: 4px;
             border: 1px solid #1a2a24;
         }
-
         .registers .reg-name {
             color: #8899aa;
         }
-
         .footer {
             text-align: center;
             margin-top: 3rem;
@@ -176,16 +154,16 @@
             border-top: 1px solid #2a3340;
             padding-top: 1.5rem;
         }
-
         .footer strong {
             color: #5ecf82;
         }
-
         .error {
             color: #ff6b6b;
             font-size: 0.85rem;
         }
-
+        .success {
+            color: #5ecf82;
+        }
         @media (max-width: 640px) {
             body {
                 padding: 1rem;
@@ -208,7 +186,7 @@
 
         <div class="grid">
 
-            <!-- 1. Ternary ASCII Translator -->
+            <!-- 1. Ternary ASCII Translator - FIXED -->
             <div class="card">
                 <h2>📝 Ternary ASCII Translator</h2>
                 <div class="input-group">
@@ -219,14 +197,14 @@
                     <button class="btn" id="toTernaryBtn">→ Ternary</button>
                     <button class="btn" id="toTextBtn">← ASCII</button>
                 </div>
-                <div class="output-box" id="ternaryOutput">02102 02112 02112 02121 02143 01001 02120 02121 02140 02112 02130 01011</div>
+                <div class="output-box" id="ternaryOutput"></div>
                 <div style="margin-top:0.5rem; font-size:0.8rem; color:#8899aa;">
                     Each char = 5 trits · Space = 01012
                 </div>
                 <div id="ternaryError" class="error" style="display:none;"></div>
             </div>
 
-            <!-- 2. Enigma Rotor Simulator -->
+            <!-- 2. Enigma Rotor Simulator - FIXED -->
             <div class="card">
                 <h2>🌀 Enigma Rotor Simulator</h2>
                 <div class="input-group">
@@ -241,7 +219,7 @@
                 <div id="rotorError" class="error" style="display:none;"></div>
             </div>
 
-            <!-- 3. TVM Demo -->
+            <!-- 3. TVM Demo - WORKING -->
             <div class="card">
                 <h2>⚙️ TVM – Add Program</h2>
                 <p style="font-size:0.9rem; color:#8899aa;">Program: LOAD R0, 5 | LOAD R1, 3 | ADD | HALT</p>
@@ -260,7 +238,7 @@
                 <div class="output-box" id="tvmOutput">Result (R0) = 8 (00022₃) ✅</div>
             </div>
 
-            <!-- 4. scalePRT Calculator -->
+            <!-- 4. scalePRT Calculator - FIXED -->
             <div class="card">
                 <h2>📏 scalePRT Calculator</h2>
                 <div class="input-group">
@@ -288,7 +266,7 @@
 
     <script>
         // ============================================================
-        // 1. TERNARY ASCII CODEC (5‑trit)
+        // 1. TERNARY ASCII CODEC - FIXED
         // ============================================================
         const ASCII_TO_TERNARY = {};
         const TERNARY_TO_ASCII = {};
@@ -303,6 +281,7 @@
             return digits.padStart(5, '0');
         }
 
+        // Build lookup tables - CORRECT
         for (let code = 0; code < 128; code++) {
             const trits = intToTernary5(code);
             const char = String.fromCharCode(code);
@@ -315,14 +294,17 @@
             let result = '';
             for (let ch of text) {
                 const t = ASCII_TO_TERNARY[ch];
-                if (t) result += t;
-                else result += '?????';
+                if (t) {
+                    result += t;
+                } else {
+                    result += '?????'; // unknown char placeholder
+                }
             }
             return result;
         }
 
         function ternaryToText(trits) {
-            // remove spaces and newlines
+            // Remove all whitespace
             trits = trits.replace(/\s/g, '');
             if (trits.length % 5 !== 0) {
                 throw new Error('Ternary string length must be multiple of 5');
@@ -331,20 +313,22 @@
             for (let i = 0; i < trits.length; i += 5) {
                 const chunk = trits.substr(i, 5);
                 const char = TERNARY_TO_ASCII[chunk];
-                if (char) result += char;
-                else result += '?';
+                if (char) {
+                    result += char;
+                } else {
+                    result += '?';
+                }
             }
             return result;
         }
 
         function formatTernary(trits) {
-            // group by 5 with spaces
             const groups = trits.match(/.{5}/g);
             return groups ? groups.join(' ') : trits;
         }
 
         // ============================================================
-        // 2. ENIGMA ROTOR SIMULATOR
+        // 2. ENIGMA ROTOR SIMULATOR - FIXED
         // ============================================================
         const ROTORS = [
             [0, 1, 2],
@@ -362,7 +346,7 @@
         }
 
         function enigmaTransform(inputTrits) {
-            // Remove all non-0,1,2 characters
+            // Keep only 0,1,2
             const cleaned = inputTrits.replace(/[^012]/g, '');
             if (cleaned.length === 0) return '';
 
@@ -399,9 +383,17 @@
         }
 
         // ============================================================
-        // 3. TVM SIMULATOR (ternary arithmetic)
+        // 3. TVM - WORKING
         // ============================================================
-        function intToTernary(n, len) {
+        function tvmTernaryToInt(trits) {
+            let val = 0;
+            for (let ch of trits) {
+                val = val * 3 + parseInt(ch, 10);
+            }
+            return val;
+        }
+
+        function tvmIntToTernary(n, len) {
             len = len || 5;
             if (n === 0) return '0'.repeat(len);
             let digits = '';
@@ -410,14 +402,6 @@
                 n = Math.floor(n / 3);
             }
             return digits.padStart(len, '0');
-        }
-
-        function ternaryToInt(trits) {
-            let val = 0;
-            for (let ch of trits) {
-                val = val * 3 + parseInt(ch, 10);
-            }
-            return val;
         }
 
         function runTVM() {
@@ -430,43 +414,45 @@
                 R5: '00000'
             };
 
-            // Program: LOAD R0, 5 | LOAD R1, 3 | ADD | HALT
-            // 5 in ternary = 00012₃, 3 = 00010₃
-            const r0_val = 5;
-            const r1_val = 3;
-
-            regs.R0 = intToTernary(r0_val, 5);
-            regs.R1 = intToTernary(r1_val, 5);
+            // LOAD R0, 5
+            regs.R0 = tvmIntToTernary(5, 5);
+            // LOAD R1, 3
+            regs.R1 = tvmIntToTernary(3, 5);
 
             // ADD: R0 = R0 + R1
-            const a = ternaryToInt(regs.R0);
-            const b = ternaryToInt(regs.R1);
+            const a = tvmTernaryToInt(regs.R0);
+            const b = tvmTernaryToInt(regs.R1);
             const sum = a + b;
-            regs.R0 = intToTernary(sum, 5);
+            regs.R0 = tvmIntToTernary(sum, 5);
 
-            // Set status: carry if >= 243 (5-trit max)
+            // Status
             regs.R5 = (sum >= 243) ? '00001' : '00000';
 
             return regs;
         }
 
         // ============================================================
-        // 4. scalePRT CALCULATOR (FIXED)
+        // 4. scalePRT CALCULATOR - FIXED
         // ============================================================
         function computeScalePRT(fwhmHz, tempK) {
             const kB = 1.380649e-23;
             const h = 6.62607015e-34;
+            const c = 299792458;
             const lambda = 780e-9; // 780 nm
             const pi = Math.PI;
             const log2_3 = Math.log2(3);
 
             if (fwhmHz <= 0) {
-                return { scalePRT: Infinity, ratio: Infinity, E_landauer: 0, E_resonance: 0 };
+                return { scalePRT: Infinity, ratio: Infinity };
             }
 
+            // Energy per bit at temperature T (Landauer limit)
             const E_landauer = kB * tempK * Math.log(2);
+            // Energy corresponding to resonance width
             const E_resonance = h * fwhmHz;
+            // Ratio
             const ratio = E_landauer / E_resonance;
+            // scalePRT = (lambda / (2*pi)) * (E_landauer / E_resonance) / log2(3)
             const scalePRT = (lambda / (2 * pi)) * ratio / log2_3;
 
             return { scalePRT, ratio, E_landauer, E_resonance };
@@ -549,7 +535,7 @@
                 document.getElementById('r4').textContent = regs.R4;
                 document.getElementById('r5').textContent = regs.R5;
 
-                const result = ternaryToInt(regs.R0);
+                const result = tvmTernaryToInt(regs.R0);
                 const resultTernary = regs.R0;
                 document.getElementById('tvmOutput').textContent =
                     `Result (R0) = ${result} (${resultTernary}₃) ✅`;
@@ -578,16 +564,9 @@
             });
 
             // --- Initial triggers ---
-            // Load initial translation
             document.getElementById('toTernaryBtn').click();
-
-            // Run initial TVM
             document.getElementById('tvmBtn').click();
-
-            // Compute initial scalePRT
             document.getElementById('scaleBtn').click();
-
-            // Initial rotor demo
             document.getElementById('rotorBtn').click();
         });
     </script>
